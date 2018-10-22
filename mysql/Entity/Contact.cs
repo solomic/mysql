@@ -18,7 +18,7 @@ namespace Mig.Entity
         string _LastErrorMessage;
         string mode;
 
-        public void Validate(string mode)
+        public void Validate()
         {
             /**/
             if (_last_name == "" )
@@ -86,22 +86,29 @@ namespace Mig.Entity
             /*... все поля*/
             return 0;
         }
-        public int RefreshData()
+        public void RefreshData()
         {
-            
-            _id= Convert.ToInt32(tbl.Rows[0]["id"]);
-            _contact_id= Convert.ToInt32(tbl.Rows[0]["contact_id"]) ;
-            _last_name = tbl.Rows[0]["last_name"].ToString();
-            _first_name= tbl.Rows[0]["first_name"].ToString();
-            _second_name=tbl.Rows[0]["second_name"].ToString()  ;
-            if (tbl.Rows[0]["birthday"] == DBNull.Value)
-                _birthday = null;
-            else
-                _birthday=Convert.ToDateTime(tbl.Rows[0]["birthday"]);
+            try
+            {
+                _id = Convert.ToInt32(tbl.Rows[0]["id"]);
+                _contact_id = Convert.ToInt32(tbl.Rows[0]["contact_id"]);
+                _last_name = tbl.Rows[0]["last_name"].ToString();
+                _first_name = tbl.Rows[0]["first_name"].ToString();
+                _second_name = tbl.Rows[0]["second_name"].ToString();
+                if (tbl.Rows[0]["birthday"] == DBNull.Value)
+                    _birthday = null;
+                else
+                    _birthday = Convert.ToDateTime(tbl.Rows[0]["birthday"]);
+            }
+            catch(Exception ex)
+            {
+                _LastErrorMessage = ex.Message;
+                throw new System.InvalidOperationException("Ошибка: "+ex.Message);
+            }
             /*... все поля*/
-            return 0;
+           
         }
-        public void Save(string mode)
+        public void Save()
         {
            
             if (change.Count != 0)

@@ -45,7 +45,8 @@ namespace mysql
                 con.last_name = textBox2.Text;
                 con.first_name = "кошка";
                 con.birthday = dateTimePicker1.Value;
-                con.Save("");
+                con.Validate();
+                con.Save();
             }
             catch(Exception ex)
             {
