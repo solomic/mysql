@@ -16,22 +16,35 @@ namespace Mig.Entity
         DataTable tbl;
         List<string> change;
         string _LastErrorMessage;
+        string mode;
 
-        void Validate(string mode)
+        public void Validate(string mode)
         {
             /**/
-            //throw new System.InvalidOperationException("Поле <Фамилия> обязательно для заполнения!");
+            if (_last_name == "" )
+                throw new System.InvalidOperationException("Поле <Фамилия> обязательно для заполнения!");
+            if (_first_name == "")
+                throw new System.InvalidOperationException("Поле <Имя> обязательно для заполнения!");
         }
         public string LastErrorMessage
         {
             get { return _LastErrorMessage; }
         }
 
-        public Contact()
-        {            
-            tbl =  new DataTable();
+        void Init()
+        {
+            tbl = new DataTable();
             change = new List<string>();
-            
+        }
+        public Contact()
+        {
+            Init();
+            mode = "default";
+        }
+        public Contact(string pMode)
+        {
+            Init();
+            mode = pMode;
         }
         public void ReadFromDB(int ContactId)
         {
@@ -92,9 +105,7 @@ namespace Mig.Entity
         {
            
             if (change.Count != 0)
-            {
-                Validate(mode);
-
+            {                
                 string statement="UPDATE cmo.contact SET ";
                 /*собрать Update*/
                 foreach (string st in change)
