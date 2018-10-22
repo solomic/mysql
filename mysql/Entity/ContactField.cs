@@ -43,8 +43,13 @@ namespace Mig.Entity
             }
             set
             {
-                _last_name = value.Trim();
-                change.Add("last_name='"+ _last_name+"',");
+
+                if (value != _last_name)
+                {
+                    _last_name = value==null?null:value.Trim();
+                    change.Add("last_name='" + _last_name + "',");
+                    fio="";
+                }
               
             }
         }
@@ -58,8 +63,12 @@ namespace Mig.Entity
             }
             set
             {
-                _first_name = value.Trim();                    
-                change.Add("first_name='"+ _first_name+"',");
+                if (value != _first_name)
+                {
+                    _first_name = value == null ? null : value.Trim();
+                    change.Add("first_name='" + _first_name + "',");
+                    fio = "";
+                }
                 
             }
         }
@@ -73,8 +82,12 @@ namespace Mig.Entity
             }
             set
             {
-                _second_name = value.Trim();
-                change.Add("second_name='"+ _second_name+"',");
+                if (value != _second_name)
+                {
+                    _second_name = value == null ? null : value.Trim();
+                    change.Add("second_name='" + _second_name + "',");
+                    fio = "";
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -87,8 +100,11 @@ namespace Mig.Entity
             }
             set
             {
-                _birthday = value;
-                change.Add("birthday='"+ _birthday.Value.ToString( "yyyy-MM-dd 00:00:00")+"',");
+                if (value != _birthday)
+                {
+                    _birthday = value;
+                    change.Add("birthday='" + _birthday.Value.ToString("yyyy-MM-dd 00:00:00") + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -101,8 +117,11 @@ namespace Mig.Entity
             }
             set
             {
-                _birth_town = value.Trim();
-                change.Add("birth_town='"+_birth_town + "',");
+                if (value != _birth_town)
+                {
+                    _birth_town = value == null ? null : value.Trim();
+                    change.Add("birth_town='" + _birth_town + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -135,8 +154,11 @@ namespace Mig.Entity
             }
             set
             {
-                _sex = value.Trim();
-                change.Add("sex='"+ _sex + "',");
+                if (value != _sex)
+                {
+                    _sex = value == null ? null : value.Trim();
+                    change.Add("sex='" + _sex + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -149,8 +171,11 @@ namespace Mig.Entity
             }
             set
             {
-                _comments = value.Trim();
-                change.Add("comments='"+ _comments + "',");
+                if (value != _comments)
+                {
+                    _comments = value == null ? null : value.Trim();
+                    change.Add("comments='" + _comments + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -163,8 +188,11 @@ namespace Mig.Entity
             }
             set
             {
-                _date_entry_future = value;
-                change.Add("date_entry_future='"+ _date_entry_future.Value.ToString("yyyy-MM-dd HH:mm:ss") + "',");
+                if (value != _date_entry_future)
+                {
+                    _date_entry_future = value;
+                    change.Add("date_entry_future='" + _date_entry_future.Value.ToString("yyyy-MM-dd HH:mm:ss") + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -177,13 +205,16 @@ namespace Mig.Entity
             }
             set
             {
-                _rf = value.Trim();
-                change.Add("rf='"+ _rf + "',");
+                if (value != _rf)
+                {
+                    _rf = value == null ? null : value.Trim();
+                    change.Add("rf='" + _rf + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
-        int _doc_state; //-- 1 - документы на визу отданы
-        public int doc_state
+        int? _doc_state; //-- 1 - документы на визу отданы
+        public int? doc_state
         {
             get
             {
@@ -191,8 +222,11 @@ namespace Mig.Entity
             }
             set
             {
-                _doc_state = value;
-                change.Add("doc_state="+ _doc_state+",");
+                if (value != _doc_state)
+                {
+                    _doc_state = value == null ? null : value;
+                    change.Add("doc_state=" + _doc_state + ",");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -210,7 +244,7 @@ namespace Mig.Entity
                 _fio = _last_name +
                        _last_name != "" ? (" " + _first_name) : "" +
                       _second_name != "" ? (" " + _second_name) : "";
-                change.Add("fio='"+ _fio + "',");
+               // change.Add("fio='"+ _fio + "',");
             }
 
         }
@@ -224,8 +258,11 @@ namespace Mig.Entity
             }
             set
             {
-                _last_enu = value.Trim();
-                change.Add("last_enu='"+ _last_enu + "',");
+                if (value != _last_enu)
+                {
+                    _last_enu = value == null ? null : value.Trim();
+                    change.Add("last_enu='" + _last_enu + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -238,8 +275,11 @@ namespace Mig.Entity
             }
             set
             {
-                _first_enu = value.Trim();
-                change.Add("first_enu='"+ _first_enu + "',");
+                if (value != _first_enu)
+                {
+                    _first_enu = value == null ? null : value.Trim();
+                    change.Add("first_enu='" + _first_enu + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -252,8 +292,11 @@ namespace Mig.Entity
             }
             set
             {
-                _second_enu = value.Trim();
-                change.Add("second_enu='"+ _second_enu+"',");
+                if (value != _second_enu)
+                {
+                    _second_enu = value == null ? null : value.Trim();
+                    change.Add("second_enu='" + _second_enu + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -266,8 +309,11 @@ namespace Mig.Entity
             }
             set
             {
-                _route = value.Trim();
-                change.Add("route='"+ _route+"',");
+                if (value != _route)
+                {
+                    _route = value == null ? null : value.Trim();
+                    change.Add("route='" + _route + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -280,8 +326,11 @@ namespace Mig.Entity
             }
             set
             {
-                _address_home = value.Trim();
-                change.Add("address_home='"+ _address_home+"',");
+                if (value != _address_home)
+                {
+                    _address_home = value == null ? null : value.Trim();
+                    change.Add("address_home='" + _address_home + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -294,8 +343,11 @@ namespace Mig.Entity
             }
             set
             {
-                _position_code = value.Trim();
-                change.Add("position_code='"+ _position_code+"',");
+                if (value != _position_code)
+                {
+                    _position_code = value == null ? null : value.Trim();
+                    change.Add("position_code='" + _position_code + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -308,8 +360,11 @@ namespace Mig.Entity
             }
             set
             {
-                _relatives = value.Trim();
-                change.Add("relatives='" + _relatives + "',");
+                if (value != _relatives)
+                {
+                    _relatives = value == null ? null : value.Trim();
+                    change.Add("relatives='" + _relatives + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -322,8 +377,11 @@ namespace Mig.Entity
             }
             set
             {
-                _med = value.Trim();
-                change.Add("med='"+ _med + "',");
+                if (value != _med)
+                {
+                    _med = value == null ? null : value.Trim();
+                    change.Add("med='" + _med + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -336,8 +394,11 @@ namespace Mig.Entity
             }
             set
             {
-                _deduct = value.Trim();
-                change.Add("deduct='"+ _deduct + "',");
+                if (value != _deduct)
+                {
+                    _deduct = value == null ? null : value.Trim();
+                    change.Add("deduct='" + _deduct + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -350,8 +411,11 @@ namespace Mig.Entity
             }
             set
             {
-                _delivery_dt = value;
-                change.Add("delivery_dt='" + _delivery_dt.Value.ToString("yyyy-MM-dd 00:00:00") + "',");
+                if (value != _delivery_dt)
+                {
+                    _delivery_dt = value;
+                    change.Add("delivery_dt='" + _delivery_dt.Value.ToString("yyyy-MM-dd 00:00:00") + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -364,13 +428,16 @@ namespace Mig.Entity
             }
             set
             {
-                _phone = value.Trim();
-                change.Add("phone='"+ _phone + "',");
+                if (value != _phone)
+                {
+                    _phone = value == null ? null : value.Trim();
+                    change.Add("phone='" + _phone + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
-        int _reg_extend;
-        public int reg_extend
+        int? _reg_extend;
+        public int? reg_extend
         {
             get
             {
@@ -378,8 +445,11 @@ namespace Mig.Entity
             }
             set
             {
-                _reg_extend = value;
-                change.Add("reg_extend="+ _reg_extend + ",");
+                if (value != _reg_extend)
+                {
+                    _reg_extend = value == null ? null : value;
+                    change.Add("reg_extend=" + _reg_extend + ",");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -392,8 +462,11 @@ namespace Mig.Entity
             }
             set
             {
-                _type = value.Trim();
-                change.Add("type='"+ _type+"',");
+                if (value != _type)
+                {
+                    _type = value == null ? null : value.Trim();
+                    change.Add("type='" + _type + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -406,8 +479,11 @@ namespace Mig.Entity
             }
             set
             {
-                _delegate_last_name = value.Trim();
-                change.Add("delegate_last_name='"+ _delegate_last_name+"',");
+                if (value != _delegate_last_name)
+                {
+                    _delegate_last_name = value == null ? null : value.Trim();
+                    change.Add("delegate_last_name='" + _delegate_last_name + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -420,8 +496,11 @@ namespace Mig.Entity
             }
             set
             {
-                _delegate_first_name = value.Trim();
-                change.Add("delegate_first_name='"+ _delegate_first_name+"',");
+                if (value != _delegate_first_name)
+                {
+                    _delegate_first_name = value == null ? null : value.Trim();
+                    change.Add("delegate_first_name='" + _delegate_first_name + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -434,8 +513,11 @@ namespace Mig.Entity
             }
             set
             {
-                _delegate_second_name = value.Trim();
-                change.Add("delegate_second_name='"+ _delegate_second_name+"',");
+                if (value != _delegate_second_name)
+                {
+                    _delegate_second_name = value == null ? null : value.Trim();
+                    change.Add("delegate_second_name='" + _delegate_second_name + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -448,8 +530,11 @@ namespace Mig.Entity
             }
             set
             {
-                _delegate_ser = value.Trim();
-                change.Add("delegate_ser='"+ _delegate_ser+"',");
+                if (value != _delegate_ser)
+                {
+                    _delegate_ser = value == null ? null : value.Trim();
+                    change.Add("delegate_ser='" + _delegate_ser + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -462,8 +547,11 @@ namespace Mig.Entity
             }
             set
             {
-                _delegate_num = value.Trim();
-                change.Add("delegate_num='"+ _delegate_num+"',");
+                if (value != _delegate_num)
+                {
+                    _delegate_num = value == null ? null : value.Trim();
+                    change.Add("delegate_num='" + _delegate_num + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -476,8 +564,11 @@ namespace Mig.Entity
             }
             set
             {
-                _delegate_dul_issue_dt = value;
-                change.Add("delegate_dul_issue_dt='"+ _delegate_dul_issue_dt.Value.ToString("yyyy-MM-dd 00:00:00") + "',");
+                if (value != _delegate_dul_issue_dt)
+                {
+                    _delegate_dul_issue_dt = value;
+                    change.Add("delegate_dul_issue_dt='" + _delegate_dul_issue_dt.Value.ToString("yyyy-MM-dd 00:00:00") + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -490,8 +581,11 @@ namespace Mig.Entity
             }
             set
             {
-                _delegate_dul_code = value.Trim();
-                change.Add("delegate_dul_code='"+ _delegate_dul_code+"',");
+                if (value != _delegate_dul_code)
+                {
+                    _delegate_dul_code = value == null ? null : value.Trim();
+                    change.Add("delegate_dul_code='" + _delegate_dul_code + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -504,8 +598,11 @@ namespace Mig.Entity
             }
             set
             {
-                _status = value.Trim();
-                change.Add("status='"+ _status+"',");
+                if (value != _status)
+                {
+                    _status = value == null ? null : value.Trim();
+                    change.Add("status='" + _status + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -518,8 +615,11 @@ namespace Mig.Entity
             }
             set
             {
-                _birth_country = value.Trim();
-                change.Add("birth_country='"+ _birth_country+"',");
+                if (value != _birth_country)
+                {
+                    _birth_country = value == null ? null : value.Trim();
+                    change.Add("birth_country='" + _birth_country + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -532,8 +632,11 @@ namespace Mig.Entity
             }
             set
             {
-                _nationality = value.Trim();
-                change.Add("nationality='"+ _nationality+"',");
+                if (value != _nationality)
+                {
+                    _nationality = value == null ? null : value.Trim();
+                    change.Add("nationality='" + _nationality + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -546,8 +649,11 @@ namespace Mig.Entity
             }
             set
             {
-                _delegate_country = value.Trim();
-                change.Add("delegate_country='"+ _delegate_country+"',");
+                if (value != _delegate_country)
+                {
+                    _delegate_country = value == null ? null : value.Trim();
+                    change.Add("delegate_country='" + _delegate_country + "',");
+                }
             }
         }
         /*--------------------------------------------------------*/
@@ -560,8 +666,11 @@ namespace Mig.Entity
             }
             set
             {
-                _delegate_nationality = value.Trim();
-                change.Add("delegate_nationality='"+ _delegate_nationality +"',");
+                if (value != _delegate_nationality)
+                {
+                    _delegate_nationality = value == null ? null : value.Trim();
+                    change.Add("delegate_nationality='" + _delegate_nationality + "',");
+                }
             }
         }
     }

@@ -41,7 +41,7 @@ namespace mysql
         {
             try
             {
-                con.last_name = textBox2.Text;
+                con.last_name = textBox1.Text;
                 con.first_name = "кошка";
                 con.birthday = dateTimePicker1.Value;
                 con.Validate();
