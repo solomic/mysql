@@ -1,5 +1,4 @@
-﻿using Mig.Tables;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,6 +17,10 @@ namespace Mig.Entity
         string _LastErrorMessage;
         string mode;
 
+        void Audit(string field,string value)
+        {
+
+        }
         public void Validate()
         {
             /**/
@@ -122,13 +125,17 @@ namespace Mig.Entity
                 statement += ("updated='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',");
                 statement += ("updated_by='" +"ARUDENKO" +"' " );
                 statement += "where (id=" + _id.ToString()+")";
+                /*чистим изменения*/
+                change.Clear();
                 /*обновляем*/
                 MySqlResultUpdate rs = new MySqlResultUpdate();
                 rs = MySqlUpdateData(statement,  null );
                 if (rs.HasError)
+                {
+                    _LastErrorMessage = rs.ErrorText;
                     throw new System.InvalidOperationException("Ошибка при обновлении контакта!");
-                /*чистим изменения*/
-                change.Clear();
+                }
+               
             }
         }
     }

@@ -393,7 +393,7 @@ namespace Mig.Entity
             set
             {
                 _type = value.Trim();
-                change.Add("type");
+                change.Add("type='"+ _type+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -407,7 +407,7 @@ namespace Mig.Entity
             set
             {
                 _delegate_last_name = value.Trim();
-                change.Add("delegate_last_name");
+                change.Add("delegate_last_name='"+ _delegate_last_name+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -421,7 +421,7 @@ namespace Mig.Entity
             set
             {
                 _delegate_first_name = value.Trim();
-                change.Add("delegate_first_name");
+                change.Add("delegate_first_name='"+ _delegate_first_name+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -435,7 +435,7 @@ namespace Mig.Entity
             set
             {
                 _delegate_second_name = value.Trim();
-                change.Add("delegate_second_name");
+                change.Add("delegate_second_name='"+ _delegate_second_name+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -449,7 +449,7 @@ namespace Mig.Entity
             set
             {
                 _delegate_ser = value.Trim();
-                change.Add("delegate_ser");
+                change.Add("delegate_ser='"+ _delegate_ser+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -463,7 +463,7 @@ namespace Mig.Entity
             set
             {
                 _delegate_num = value.Trim();
-                change.Add("delegate_num");
+                change.Add("delegate_num='"+ _delegate_num+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -477,7 +477,7 @@ namespace Mig.Entity
             set
             {
                 _delegate_dul_issue_dt = value;
-                change.Add("delegate_dul_issue_dt");
+                change.Add("delegate_dul_issue_dt='"+ _delegate_dul_issue_dt.Value.ToString("yyyy-MM-dd 00:00:00") + "',");
             }
         }
         /*--------------------------------------------------------*/
@@ -491,7 +491,7 @@ namespace Mig.Entity
             set
             {
                 _delegate_dul_code = value.Trim();
-                change.Add("delegate_dul_code");
+                change.Add("delegate_dul_code='"+ _delegate_dul_code+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -505,7 +505,7 @@ namespace Mig.Entity
             set
             {
                 _status = value.Trim();
-                change.Add("status");
+                change.Add("status='"+ _status+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -519,7 +519,7 @@ namespace Mig.Entity
             set
             {
                 _birth_country = value.Trim();
-                change.Add("birth_country");
+                change.Add("birth_country='"+ _birth_country+"',");
             }
         }
         /*--------------------------------------------------------*/

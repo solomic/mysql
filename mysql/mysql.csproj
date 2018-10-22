@@ -48,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\ContactField.cs" />
-    <Compile Include="Tables\AllTables.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\Contact.cs" />
     <Compile Include="DB\DBUtils.cs" />

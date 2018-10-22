@@ -1,5 +1,4 @@
 ﻿using Mig.Entity;
-using Mig.Tables;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,7 +20,7 @@ namespace mysql
         Contact con;
         private void button1_Click(object sender, EventArgs e)
         {
-            AllTables.Init();
+            
             con = new Contact();
             con.ReadFromDB(1);
             textBox1.Text = con.id.ToString();
