@@ -20,6 +20,7 @@ namespace Mig.Entity
         void Validate(string mode)
         {
             /**/
+            //throw new System.InvalidOperationException("Поле <Фамилия> обязательно для заполнения!");
         }
         public string LastErrorMessage
         {

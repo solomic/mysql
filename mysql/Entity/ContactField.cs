@@ -27,6 +27,11 @@ namespace Mig.Entity
             {
                 return _contact_id;
             }
+            set
+            {
+                _contact_id = value;
+                change.Add("contact_id=" + _contact_id + ",");
+            }
         }
         /*--------------------------------------------------------*/
         string _last_name;
@@ -38,13 +43,9 @@ namespace Mig.Entity
             }
             set
             {
-                if (value.Trim() == string.Empty)
-                    throw new System.InvalidOperationException("Поле <Фамилия> обязательно для заполнения!");
-                else
-                {
-                    _last_name = value;
-                    change.Add("last_name='"+ _last_name+"',");
-                }
+                _last_name = value.Trim();
+                change.Add("last_name='"+ _last_name+"',");
+              
             }
         }
         /*--------------------------------------------------------*/
@@ -57,13 +58,9 @@ namespace Mig.Entity
             }
             set
             {
-                if (value.Trim() == string.Empty)
-                    throw new System.InvalidOperationException("Поле <Имя> обязательно для заполнения!");
-                else
-                {
-                    _first_name = value.Trim();                    
-                    change.Add("first_name='"+ _first_name+"',");
-                }
+                _first_name = value.Trim();                    
+                change.Add("first_name='"+ _first_name+"',");
+                
             }
         }
         /*--------------------------------------------------------*/
@@ -139,7 +136,7 @@ namespace Mig.Entity
             set
             {
                 _sex = value.Trim();
-                change.Add("sex='"+ _sex + ",");
+                change.Add("sex='"+ _sex + "',");
             }
         }
         /*--------------------------------------------------------*/
@@ -153,7 +150,7 @@ namespace Mig.Entity
             set
             {
                 _comments = value.Trim();
-                change.Add("comments");
+                change.Add("comments='"+ _comments + "',");
             }
         }
         /*--------------------------------------------------------*/
@@ -167,7 +164,7 @@ namespace Mig.Entity
             set
             {
                 _date_entry_future = value;
-                change.Add("date_entry_future");
+                change.Add("date_entry_future='"+ _date_entry_future.Value.ToString("yyyy-MM-dd HH:mm:ss") + "',");
             }
         }
         /*--------------------------------------------------------*/
@@ -181,7 +178,7 @@ namespace Mig.Entity
             set
             {
                 _rf = value.Trim();
-                change.Add("rf");
+                change.Add("rf='"+ _rf + "',");
             }
         }
         /*--------------------------------------------------------*/
@@ -195,7 +192,7 @@ namespace Mig.Entity
             set
             {
                 _doc_state = value;
-                change.Add("doc_state");
+                change.Add("doc_state="+ _doc_state+",");
             }
         }
         /*--------------------------------------------------------*/
@@ -213,7 +210,7 @@ namespace Mig.Entity
                 _fio = _last_name +
                        _last_name != "" ? (" " + _first_name) : "" +
                       _second_name != "" ? (" " + _second_name) : "";
-                change.Add("fio");
+                change.Add("fio='"+ _fio + "',");
             }
 
         }
@@ -228,7 +225,7 @@ namespace Mig.Entity
             set
             {
                 _last_enu = value.Trim();
-                change.Add("last_enu");
+                change.Add("last_enu='"+ _last_enu + "',");
             }
         }
         /*--------------------------------------------------------*/
@@ -242,7 +239,7 @@ namespace Mig.Entity
             set
             {
                 _first_enu = value.Trim();
-                change.Add("first_enu");
+                change.Add("first_enu='"+ _first_enu + "',");
             }
         }
         /*--------------------------------------------------------*/
@@ -256,7 +253,7 @@ namespace Mig.Entity
             set
             {
                 _second_enu = value.Trim();
-                change.Add("second_enu");
+                change.Add("second_enu='"+ _second_enu+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -270,7 +267,7 @@ namespace Mig.Entity
             set
             {
                 _route = value.Trim();
-                change.Add("route");
+                change.Add("route='"+ _route+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -284,7 +281,7 @@ namespace Mig.Entity
             set
             {
                 _address_home = value.Trim();
-                change.Add("address_home");
+                change.Add("address_home='"+ _address_home+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -298,7 +295,7 @@ namespace Mig.Entity
             set
             {
                 _position_code = value.Trim();
-                change.Add("position_code");
+                change.Add("position_code='"+ _position_code+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -312,6 +309,7 @@ namespace Mig.Entity
             set
             {
                 _relatives = value.Trim();
+                change.Add("relatives='" + _relatives + "',");
             }
         }
         /*--------------------------------------------------------*/
@@ -325,7 +323,7 @@ namespace Mig.Entity
             set
             {
                 _med = value.Trim();
-                change.Add("med");
+                change.Add("med='"+ _med + "',");
             }
         }
         /*--------------------------------------------------------*/
@@ -339,7 +337,7 @@ namespace Mig.Entity
             set
             {
                 _deduct = value.Trim();
-                change.Add("deduct");
+                change.Add("deduct='"+ _deduct + "',");
             }
         }
         /*--------------------------------------------------------*/
@@ -353,7 +351,7 @@ namespace Mig.Entity
             set
             {
                 _delivery_dt = value;
-                change.Add("delivery_dt");
+                change.Add("delivery_dt='" + _delivery_dt.Value.ToString("yyyy-MM-dd 00:00:00") + "',");
             }
         }
         /*--------------------------------------------------------*/
@@ -367,7 +365,7 @@ namespace Mig.Entity
             set
             {
                 _phone = value.Trim();
-                change.Add("phone");
+                change.Add("phone='"+ _phone + "',");
             }
         }
         /*--------------------------------------------------------*/
@@ -381,7 +379,7 @@ namespace Mig.Entity
             set
             {
                 _reg_extend = value;
-                change.Add("reg_extend");
+                change.Add("reg_extend="+ _reg_extend + ",");
             }
         }
         /*--------------------------------------------------------*/
@@ -535,7 +533,7 @@ namespace Mig.Entity
             set
             {
                 _nationality = value.Trim();
-                change.Add("nationality");
+                change.Add("nationality='"+ _nationality+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -549,7 +547,7 @@ namespace Mig.Entity
             set
             {
                 _delegate_country = value.Trim();
-                change.Add("delegate_country");
+                change.Add("delegate_country='"+ _delegate_country+"',");
             }
         }
         /*--------------------------------------------------------*/
@@ -563,7 +561,7 @@ namespace Mig.Entity
             set
             {
                 _delegate_nationality = value.Trim();
-                change.Add("delegate_nationality");
+                change.Add("delegate_nationality='"+ _delegate_nationality +"',");
             }
         }
     }
