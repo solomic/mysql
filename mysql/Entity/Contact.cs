@@ -46,7 +46,7 @@ namespace Mig.Entity
             return tbl;
         }
         public override void RefreshTable()
-        {
+        {            
             tbl.Rows[0]["id"] = id;
             tbl.Rows[0]["contact_id"] = _contact_id; 
             tbl.Rows[0]["last_name"] = _last_name;

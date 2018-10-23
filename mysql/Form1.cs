@@ -26,7 +26,8 @@ namespace mysql
                 con.ReadFromDB(1);
                 textBox1.Text = con.id.ToString();
                 textBox2.Text = con.last_name;
-                dateTimePicker1.Value = Convert.ToDateTime(con.birthday);
+                if(con.birthday != null)
+                    dateTimePicker1.Value = Convert.ToDateTime(con.birthday);
 
                 dataGridView1.DataSource = con.GetContactDataTable();
             }
@@ -47,7 +48,7 @@ namespace mysql
             try
             {
                 con.last_name = textBox1.Text;
-                con.first_name = "кошка";
+                con.first_name = textBox2.Text;
                 con.birthday = dateTimePicker1.Value;
                 con.Validate();
                 con.Save();
