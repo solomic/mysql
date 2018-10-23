@@ -20,15 +20,22 @@ namespace mysql
         Contact con;
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            con = new Contact();
-            con.ReadFromDB(1);
-            textBox1.Text = con.id.ToString();
-            textBox2.Text = con.last_name;
-            dateTimePicker1.Value = Convert.ToDateTime(con.birthday);
-          
-            dataGridView1.DataSource = con.GetContactDataTable();
+            try
+            {
+                con = new Contact();
+                con.Init();
+                con.ReadFromDB(1);
+                textBox1.Text = con.id.ToString();
+                textBox2.Text = con.last_name;
+                if(con.birthday != null)
+                    dateTimePicker1.Value = Convert.ToDateTime(con.birthday);
 
+                dataGridView1.DataSource = con.GetDataTable();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
         }
 
@@ -42,7 +49,7 @@ namespace mysql
             try
             {
                 con.last_name = textBox1.Text;
-                con.first_name = "кошка";
+                con.first_name = textBox2.Text;
                 con.birthday = dateTimePicker1.Value;
                 con.Validate();
                 con.Save();
@@ -51,6 +58,13 @@ namespace mysql
             {
                 MessageBox.Show(ex.Message,"Ошибка",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Contact new_con = new Contact();
+            new_con.Init();
+            new_con.Add();
         }
     }
 }

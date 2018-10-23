@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mysqlka", "mysql\mysqlka.csproj", "{1B77654D-69E0-429C-B59C-88F941C05397}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mysql", "mysql\mysqlka.csproj", "{1B77654D-69E0-429C-B59C-88F941C05397}"
+>>>>>>> 21b9c7916971dff4428f89a6126f63e48c90f786
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

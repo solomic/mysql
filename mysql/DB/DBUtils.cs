@@ -1,4 +1,5 @@
 ﻿
+using mysql.Pref;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,16 @@ namespace Mig
 {
     static class DBUtils
     {
-        static string MySqlconnStr = "server=localhost;user=root;database=cmo;port=3306;password=123456;";
-        public class MySqlResultUpdate
+        
+        public class MySqlResultExec
         {
-            //public DataTable ResultTbl;
+            public long Result;
+            public string ErrorText;
+            public bool HasError;
+        }
+        public class MySqlResultScalar
+        {
+            public object Result;
             public string ErrorText;
             public bool HasError;
         }
@@ -24,10 +31,11 @@ namespace Mig
             public string ErrorText;           
             public bool HasError;
         }
+        
         static public MySqlResultTable MySqlGetData(string sql, List<object> param)
         {
             MySqlResultTable rw = new MySqlResultTable();
-            MySqlConnection connection = new MySqlConnection(MySqlconnStr);
+            MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
             MySqlCommand sqlCom = new MySqlCommand(sql, connection);
             try {
                 connection.Open();
@@ -54,10 +62,50 @@ namespace Mig
             }
             return rw;
         }
-        static public MySqlResultUpdate MySqlUpdateData(string sql, List<object> param)
+
+        /*Выполнение sql запроса, возврат первой строки первого столбца*/
+        static public MySqlResultScalar MySqlExecuteScalar(string sql, List<object> param,string ret_type)
         {
-            MySqlResultUpdate rw = new MySqlResultUpdate();
-            MySqlConnection connection = new MySqlConnection(MySqlconnStr);
+            MySqlResultScalar rw = new MySqlResultScalar();
+            MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
+            MySqlCommand sqlCom = new MySqlCommand(sql, connection);
+            try
+            {
+                connection.Open();
+                if (param != null)
+                {
+                    int i = 1;
+                    foreach (object prm in param)
+                    {
+                        sqlCom.Parameters.AddWithValue("param" + i.ToString(), prm);
+                        i++;
+                    }
+                }
+                if(ret_type == "string")
+                    rw.Result = (string)sqlCom.ExecuteScalar();
+                if (ret_type == "int")
+                    rw.Result = (int)sqlCom.ExecuteScalar();
+                if (ret_type == "DateTime")
+                    rw.Result = (DateTime)sqlCom.ExecuteScalar();
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                rw.HasError = true;
+                rw.ErrorText = ex.ToString();
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return rw;
+        }
+
+        /*Выполнение sql запроса без возврата данных, только id последней записи*/
+        static public MySqlResultExec MySqlExecuteNonQuery(string sql, List<object> param)
+        {
+            MySqlResultExec rw = new MySqlResultExec();
+            MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
             MySqlCommand sqlCom = new MySqlCommand(sql, connection);
             try
             {               
@@ -72,6 +120,7 @@ namespace Mig
                     }
                 }
                 sqlCom.ExecuteNonQuery();
+                rw.Result = sqlCom.LastInsertedId;
 
 
                 connection.Close();

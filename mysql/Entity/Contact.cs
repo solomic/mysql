@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using mysql.Pref;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,74 +10,42 @@ using static Mig.DBUtils;
 
 namespace Mig.Entity
 {
-    public partial class Contact
-    {
-       
-        DataTable tbl;
-        List<string> change;
-        string _LastErrorMessage;
-        string mode;
-
-        void Audit(string field,string value)
-        {
-
-        }
+    public partial class Contact: EntityBase
+    {        
         public void Validate()
         {
-            /**/
+            /*валидация текущий свойств контакта*/
             if (_last_name == "" )
                 throw new System.InvalidOperationException("Поле <Фамилия> обязательно для заполнения!");
             if (_first_name == "")
                 throw new System.InvalidOperationException("Поле <Имя> обязательно для заполнения!");
         }
-        public string LastErrorMessage
-        {
-            get { return _LastErrorMessage; }
-        }
 
-        void Init()
+        public override void Init()
         {
-            tbl = new DataTable();
-            change = new List<string>();
+            base.Init();            
+           // SQL_SEL = "SELECT * FROM " + Pref.scheme+"."+ GetType().Name + " where id=@param1";
+            //SQL_UPD = "UPDATE " + Pref.scheme + "." + GetType().Name + " SET ";
         }
         public Contact()
         {
-            Init();
-            mode = "default";
+            //Init();
         }
-        public Contact(string pMode)
+        public Contact(string pMode):base(pMode)
         {
-            Init();
-            mode = pMode;
-        }
-        public void ReadFromDB(int ContactId)
-        {
-            change.Clear();
-            string sql = "SELECT * FROM cmo.contact where id=@param1";
-            MySqlResultTable rw_tmp = new MySqlResultTable();
-            rw_tmp = DBUtils.MySqlGetData(sql,new List<object> { ContactId });
-            if (rw_tmp.HasError)
-            {
-                _LastErrorMessage = rw_tmp.ErrorText;
-                throw new System.InvalidOperationException("Ошибка чтения из БД!");
-            }
-            else
-            {
-                /*Обновляем внутренние переменные*/
-                tbl = rw_tmp.ResultTbl;
-                RefreshData();
-            }
             
         }
-        
-        public DataTable GetContactDataTable()
+        public override void ReadFromDB(int Row_id)
         {
-            RefreshTable();
-            return tbl;
+            base.ReadFromDB(Row_id);
+            RefreshData();
+
         }
-        public int RefreshTable()
-        {
-            tbl.Rows[0]["id"] = _id;
+        
+       
+        public override void RefreshTable()
+        {            
+            tbl.Rows[0]["id"] = id;
             tbl.Rows[0]["contact_id"] = _contact_id; 
             tbl.Rows[0]["last_name"] = _last_name;
             tbl.Rows[0]["first_name"] = _first_name;
@@ -86,57 +55,33 @@ namespace Mig.Entity
             else
                 tbl.Rows[0]["birthday"] = _birthday;
          
-            /*... все поля*/
-            return 0;
+           
         }
-        public void RefreshData()
+        public override void RefreshData()
         {
             try
             {
-                _id = Convert.ToInt32(tbl.Rows[0]["id"]);
-                _contact_id = Convert.ToInt32(tbl.Rows[0]["contact_id"]);
-                _last_name = tbl.Rows[0]["last_name"].ToString();
-                _first_name = tbl.Rows[0]["first_name"].ToString();
-                _second_name = tbl.Rows[0]["second_name"].ToString();
-                if (tbl.Rows[0]["birthday"] == DBNull.Value)
-                    _birthday = null;
-                else
-                    _birthday = Convert.ToDateTime(tbl.Rows[0]["birthday"]);
+                if (tbl.Rows.Count > 0)
+                {
+                    id = Convert.ToInt32(tbl.Rows[0]["id"]);
+                    _contact_id = Convert.ToInt32(tbl.Rows[0]["contact_id"]);
+                    _last_name = tbl.Rows[0]["last_name"].ToString();
+                    _first_name = tbl.Rows[0]["first_name"].ToString();
+                    _second_name = tbl.Rows[0]["second_name"].ToString();
+                    if (tbl.Rows[0]["birthday"] == DBNull.Value)
+                        _birthday = null;
+                    else
+                        _birthday = Convert.ToDateTime(tbl.Rows[0]["birthday"]);
+                }
             }
             catch(Exception ex)
             {
-                _LastErrorMessage = ex.Message;
+                LastErrorMessage = ex.Message;
                 throw new System.InvalidOperationException("Ошибка: "+ex.Message);
             }
             /*... все поля*/
            
         }
-        public void Save()
-        {
-           
-            if (change.Count != 0)
-            {                
-                string statement="UPDATE cmo.contact SET ";
-                /*собрать Update*/
-                foreach (string st in change)
-                {
-                    statement += st ;
-                }
-                statement += ("updated='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',");
-                statement += ("updated_by='" +"ARUDENKO" +"' " );
-                statement += "where (id=" + _id.ToString()+")";
-                /*чистим изменения*/
-                change.Clear();
-                /*обновляем*/
-                MySqlResultUpdate rs = new MySqlResultUpdate();
-                rs = MySqlUpdateData(statement,  null );
-                if (rs.HasError)
-                {
-                    _LastErrorMessage = rs.ErrorText;
-                    throw new System.InvalidOperationException("Ошибка при обновлении контакта!");
-                }
-               
-            }
-        }
+        
     }
 }
