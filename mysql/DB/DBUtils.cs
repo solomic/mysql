@@ -18,6 +18,12 @@ namespace Mig
             public string ErrorText;
             public bool HasError;
         }
+        public class MySqlResultScalar
+        {
+            public object Result;
+            public string ErrorText;
+            public bool HasError;
+        }
         public class MySqlResultTable
         {           
             public DataTable ResultTbl;           
@@ -55,7 +61,43 @@ namespace Mig
             }
             return rw;
         }
-        static public MySqlResultExec MySqlUpdateData(string sql, List<object> param)
+        static public MySqlResultScalar MySqlExecuteScalar(string sql, List<object> param,string ret_type)
+        {
+            MySqlResultScalar rw = new MySqlResultScalar();
+            MySqlConnection connection = new MySqlConnection(MySqlconnStr);
+            MySqlCommand sqlCom = new MySqlCommand(sql, connection);
+            try
+            {
+                connection.Open();
+                if (param != null)
+                {
+                    int i = 1;
+                    foreach (object prm in param)
+                    {
+                        sqlCom.Parameters.AddWithValue("param" + i.ToString(), prm);
+                        i++;
+                    }
+                }
+                if(ret_type == "string")
+                    rw.Result = (string)sqlCom.ExecuteScalar();
+                if (ret_type == "int")
+                    rw.Result = (int)sqlCom.ExecuteScalar();
+                if (ret_type == "DateTime")
+                    rw.Result = (DateTime)sqlCom.ExecuteScalar();
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                rw.HasError = true;
+                rw.ErrorText = ex.ToString();
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return rw;
+        }
+        static public MySqlResultExec MySqlExecuteNonQuery(string sql, List<object> param)
         {
             MySqlResultExec rw = new MySqlResultExec();
             MySqlConnection connection = new MySqlConnection(MySqlconnStr);

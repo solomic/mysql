@@ -62,7 +62,9 @@ namespace mysql
 
         private void button3_Click(object sender, EventArgs e)
         {
-            con.Add();
+            Contact new_con = new Contact();
+            new_con.Init();
+            new_con.Add();
         }
     }
 }

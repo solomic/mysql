@@ -29,6 +29,11 @@ namespace Mig.Entity
             get { return "INSERT INTO " + Pref.Scheme + "." + GetType().Name.ToLower() + " "; }
            // set { _SQL_INS = value; }
         }
+        public virtual string SQL_MAX_ID
+        {
+            get { return "SELECT MAX(id) FROM " + Pref.Scheme + "." + GetType().Name.ToLower() + ";"; }
+            // set { _SQL_INS = value; }
+        }
         long _id;
         public long id
         {
@@ -114,7 +119,7 @@ namespace Mig.Entity
                 change.Clear();
                 /*обновляем*/
                 MySqlResultExec rs = new MySqlResultExec();
-                rs = MySqlUpdateData(statement, null);
+                rs = MySqlExecuteNonQuery(statement, null);
                 if (rs.HasError)
                 {
                     LastErrorMessage = rs.ErrorText;
@@ -129,15 +134,10 @@ namespace Mig.Entity
             
             string statement = SQL_INS;
             /*собрать Update*/
-            statement += "(contact_id) VALUES("+ GetNextId().ToString()+");";
-            //statement += ("updated='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',");
-            //statement += ("updated_by='" + Pref.LoginName + "' ");
-            //statement += "where (id=" + id.ToString() + ")";
-            /*чистим изменения*/
-            //change.Clear();
+            statement += "(contact_id) VALUES("+ GetNextId().ToString()+");";            
             /*обновляем*/
             MySqlResultExec rs = new MySqlResultExec();
-            rs = MySqlUpdateData(statement, null);
+            rs = MySqlExecuteNonQuery(statement, null);
             if (rs.HasError)
             {
                 LastErrorMessage = rs.ErrorText;
@@ -148,7 +148,9 @@ namespace Mig.Entity
         }
         public int GetNextId()
         {
-            return 123;
+            MySqlResultScalar rw = new MySqlResultScalar();
+            rw = MySqlExecuteScalar(SQL_MAX_ID, null, "int");
+            return (int)rw.Result+1;
         }
 
         }
