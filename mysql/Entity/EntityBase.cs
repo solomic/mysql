@@ -10,12 +10,19 @@ namespace Mig.Entity
 {
     public class EntityBase
     {
-        string _SQL_ROW ;
-        public virtual string SQL_ROW
-            {
-                get { return _SQL_ROW; }
-                set { _SQL_ROW = value; }
-            }
+        string _SQL_SEL;
+        string _SQL_UPD ;
+        public virtual string SQL_SEL
+        {
+                get { return _SQL_SEL; }
+                set { _SQL_SEL = value; }
+        }
+        public virtual string SQL_UPD
+        {
+            get { return _SQL_UPD; }
+            set { _SQL_UPD = value; }
+        }
+
         int _id;
         public int id
         {
@@ -44,6 +51,11 @@ namespace Mig.Entity
         {
 
         }
+        public DataTable GetDataTable()
+        {
+            RefreshTable();
+            return tbl;
+        }
 
         public virtual void Init()
         {
@@ -52,12 +64,12 @@ namespace Mig.Entity
         }
         public EntityBase()
         {
-            Init();
+            //Init();
             mode = "default";
         }
         public EntityBase(string pMode)
         {
-            Init();
+            //Init();
             mode = pMode;
         }
         public virtual void RefreshTable()
@@ -72,7 +84,7 @@ namespace Mig.Entity
         {
             change.Clear();
             MySqlResultTable rw_tmp = new MySqlResultTable();
-            rw_tmp = DBUtils.MySqlGetData(SQL_ROW, new List<object> { Row_id });
+            rw_tmp = DBUtils.MySqlGetData(SQL_SEL, new List<object> { Row_id });
             if (rw_tmp.HasError)
             {
                 LastErrorMessage = rw_tmp.ErrorText;
@@ -81,6 +93,34 @@ namespace Mig.Entity
             /*Обновляем внутренние переменные*/
             tbl = rw_tmp.ResultTbl;
         }
+        public virtual void Save()
+        {
 
+            if (change.Count != 0)
+            {
+                
+                string statement = SQL_UPD;
+                /*собрать Update*/
+                foreach (string st in change)
+                {
+                    statement += st;
+                }
+                statement += ("updated='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',");
+                statement += ("updated_by='" + "ARUDENKO" + "' ");
+                statement += "where (id=" + id.ToString() + ")";
+                /*чистим изменения*/
+                change.Clear();
+                /*обновляем*/
+                MySqlResultUpdate rs = new MySqlResultUpdate();
+                rs = MySqlUpdateData(statement, null);
+                if (rs.HasError)
+                {
+                    LastErrorMessage = rs.ErrorText;
+                    throw new System.InvalidOperationException("Ошибка при обновлении контакта!");
+                }
+
+            }
         }
+
+    }
 }

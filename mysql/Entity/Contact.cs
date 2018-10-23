@@ -23,11 +23,12 @@ namespace Mig.Entity
         public override void Init()
         {
             base.Init();
-            SQL_ROW = "SELECT * FROM cmo.contact where id=@param1";
+            SQL_SEL = "SELECT * FROM cmo.contact where id=@param1";
+            SQL_UPD = "UPDATE cmo.contact SET ";
         }
-        public Contact():base()
+        public Contact()
         {
-            
+            //Init();
         }
         public Contact(string pMode):base(pMode)
         {
@@ -40,11 +41,7 @@ namespace Mig.Entity
 
         }
         
-        public DataTable GetContactDataTable()
-        {
-            RefreshTable();
-            return tbl;
-        }
+       
         public override void RefreshTable()
         {            
             tbl.Rows[0]["id"] = id;
@@ -84,32 +81,6 @@ namespace Mig.Entity
             /*... все поля*/
            
         }
-        public void Save()
-        {
-           
-            if (change.Count != 0)
-            {                
-                string statement="UPDATE cmo.contact SET ";
-                /*собрать Update*/
-                foreach (string st in change)
-                {
-                    statement += st ;
-                }
-                statement += ("updated='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',");
-                statement += ("updated_by='" +"ARUDENKO" +"' " );
-                statement += "where (id=" + id.ToString()+")";
-                /*чистим изменения*/
-                change.Clear();
-                /*обновляем*/
-                MySqlResultUpdate rs = new MySqlResultUpdate();
-                rs = MySqlUpdateData(statement,  null );
-                if (rs.HasError)
-                {
-                    LastErrorMessage = rs.ErrorText;
-                    throw new System.InvalidOperationException("Ошибка при обновлении контакта!");
-                }
-               
-            }
-        }
+        
     }
 }

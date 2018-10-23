@@ -23,13 +23,14 @@ namespace mysql
             try
             {
                 con = new Contact();
+                con.Init();
                 con.ReadFromDB(1);
                 textBox1.Text = con.id.ToString();
                 textBox2.Text = con.last_name;
                 if(con.birthday != null)
                     dateTimePicker1.Value = Convert.ToDateTime(con.birthday);
 
-                dataGridView1.DataSource = con.GetContactDataTable();
+                dataGridView1.DataSource = con.GetDataTable();
             }
             catch(Exception ex)
             {
