@@ -20,15 +20,20 @@ namespace mysql
         Contact con;
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            con = new Contact();
-            con.ReadFromDB(1);
-            textBox1.Text = con.id.ToString();
-            textBox2.Text = con.last_name;
-            dateTimePicker1.Value = Convert.ToDateTime(con.birthday);
-          
-            dataGridView1.DataSource = con.GetContactDataTable();
+            try
+            {
+                con = new Contact();
+                con.ReadFromDB(1);
+                textBox1.Text = con.id.ToString();
+                textBox2.Text = con.last_name;
+                dateTimePicker1.Value = Convert.ToDateTime(con.birthday);
 
+                dataGridView1.DataSource = con.GetContactDataTable();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
         }
 

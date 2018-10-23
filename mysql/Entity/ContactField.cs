@@ -6,25 +6,18 @@ using System.Threading.Tasks;
 
 namespace Mig.Entity
 {
-    public partial class Contact
+    public partial class Contact: EntityBase
     {
 
         /*Поля таблицы*/
         /*--------------------------------------------------------*/
-        int _id;
-        public int id
-        {
-            get
-            {
-                return _id;
-            }
-        }
+        
         /*--------------------------------------------------------*/
         int _contact_id;
         public int contact_id
         {
             get
-            {
+            {                
                 return _contact_id;
             }
             set
@@ -662,7 +655,7 @@ namespace Mig.Entity
         {
             get
             {
-                return _delegate_nationality;
+                return _delegate_nationality; 
             }
             set
             {
