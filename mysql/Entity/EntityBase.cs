@@ -1,4 +1,5 @@
 ﻿using mysql.Pref;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,29 +11,22 @@ using static Mig.DBUtils;
 namespace Mig.Entity
 {
     public class EntityBase
-    {
-        //string _SQL_SEL;
-        //string _SQL_UPD;
-       // string _SQL_INS;
+    { 
         public virtual string SQL_SEL
         {
-                get { return "SELECT* FROM " + Pref.Scheme + "."+ GetType().Name.ToLower() + " where id = @param1"; }
-                //set { _SQL_SEL = value; }
+            get { return "SELECT* FROM " + Pref.Scheme + "."+ GetType().Name.ToLower() + " where id = @param1"; }          
         }
         public virtual string SQL_UPD
         {
-            get { return "UPDATE " + Pref.Scheme + "." + GetType().Name.ToLower() + " SET "; }
-           // set { _SQL_UPD = value; }
+            get { return "UPDATE " + Pref.Scheme + "." + GetType().Name.ToLower() + " SET "; }           
         }
         public virtual string SQL_INS
         {
-            get { return "INSERT INTO " + Pref.Scheme + "." + GetType().Name.ToLower() + " "; }
-           // set { _SQL_INS = value; }
+            get { return "INSERT INTO " + Pref.Scheme + "." + GetType().Name.ToLower() + " "; }          
         }
         public virtual string SQL_MAX_ID
         {
-            get { return "SELECT MAX(id) FROM " + Pref.Scheme + "." + GetType().Name.ToLower() + ";"; }
-            // set { _SQL_INS = value; }
+            get { return "SELECT MAX(id) FROM " + Pref.Scheme + "." + GetType().Name.ToLower() + ";"; }            
         }
         long _id;
         public long id
@@ -56,7 +50,8 @@ namespace Mig.Entity
         public string mode;
         public DataTable tbl;
         public List<string> change;
-
+        MySqlConnection conn;
+        MySqlTransaction myTrans;
 
         public void Audit(string field, string value)
         {
@@ -72,6 +67,8 @@ namespace Mig.Entity
         {
             tbl = new DataTable();
             change = new List<string>();
+            conn = new MySqlConnection(Pref.MySqlconnStr);
+            myTrans = conn.BeginTransaction();
         }
         public EntityBase()
         {           
@@ -122,9 +119,11 @@ namespace Mig.Entity
                 rs = MySqlExecuteNonQuery(statement, null);
                 if (rs.HasError)
                 {
+                    myTrans.Rollback();
                     LastErrorMessage = rs.ErrorText;
                     throw new System.InvalidOperationException("Ошибка при обновлении записи!");
                 }
+                myTrans.Commit();
 
             }
         }
@@ -152,6 +151,9 @@ namespace Mig.Entity
             rw = MySqlExecuteScalar(SQL_MAX_ID, null, "int");
             return (int)rw.Result+1;
         }
+
+        
+        
 
         }
 }

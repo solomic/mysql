@@ -1,4 +1,5 @@
 ﻿
+using mysql.Pref;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Mig
 {
     static class DBUtils
     {
-        static string MySqlconnStr = "server=localhost;user=root;database=cmo;port=3306;password=123456;";
+        
         public class MySqlResultExec
         {
             public long Result;
@@ -34,7 +35,7 @@ namespace Mig
         static public MySqlResultTable MySqlGetData(string sql, List<object> param)
         {
             MySqlResultTable rw = new MySqlResultTable();
-            MySqlConnection connection = new MySqlConnection(MySqlconnStr);
+            MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
             MySqlCommand sqlCom = new MySqlCommand(sql, connection);
             try {
                 connection.Open();
@@ -66,7 +67,7 @@ namespace Mig
         static public MySqlResultScalar MySqlExecuteScalar(string sql, List<object> param,string ret_type)
         {
             MySqlResultScalar rw = new MySqlResultScalar();
-            MySqlConnection connection = new MySqlConnection(MySqlconnStr);
+            MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
             MySqlCommand sqlCom = new MySqlCommand(sql, connection);
             try
             {
@@ -104,7 +105,7 @@ namespace Mig
         static public MySqlResultExec MySqlExecuteNonQuery(string sql, List<object> param)
         {
             MySqlResultExec rw = new MySqlResultExec();
-            MySqlConnection connection = new MySqlConnection(MySqlconnStr);
+            MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
             MySqlCommand sqlCom = new MySqlCommand(sql, connection);
             try
             {               

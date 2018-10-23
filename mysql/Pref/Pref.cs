@@ -10,5 +10,6 @@ namespace mysql.Pref
     {
         public static string Scheme = "cmo";
         public static string LoginName = "ARUDENKO";
+        public static string MySqlconnStr = "server=localhost;user=root;database=cmo;port=3306;password=123456;";
     }
 }
