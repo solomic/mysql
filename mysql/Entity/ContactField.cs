@@ -41,7 +41,7 @@ namespace Mig.Entity
                 {
                     _last_name = value==null?null:value.Trim();
                     change.Add("last_name='" + _last_name + "',");
-                    fio="";
+                    fio="";                    
                 }
               
             }

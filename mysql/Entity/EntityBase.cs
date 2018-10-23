@@ -1,4 +1,5 @@
-﻿using System;
+﻿using mysql.Pref;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -10,21 +11,26 @@ namespace Mig.Entity
 {
     public class EntityBase
     {
-        string _SQL_SEL;
-        string _SQL_UPD ;
+        //string _SQL_SEL;
+        //string _SQL_UPD;
+       // string _SQL_INS;
         public virtual string SQL_SEL
         {
-                get { return _SQL_SEL; }
-                set { _SQL_SEL = value; }
+                get { return "SELECT* FROM " + Pref.Scheme + "."+ GetType().Name.ToLower() + " where id = @param1"; }
+                //set { _SQL_SEL = value; }
         }
         public virtual string SQL_UPD
         {
-            get { return _SQL_UPD; }
-            set { _SQL_UPD = value; }
+            get { return "UPDATE " + Pref.Scheme + "." + GetType().Name.ToLower() + " SET "; }
+           // set { _SQL_UPD = value; }
         }
-
-        int _id;
-        public int id
+        public virtual string SQL_INS
+        {
+            get { return "INSERT INTO " + Pref.Scheme + "." + GetType().Name.ToLower() + " "; }
+           // set { _SQL_INS = value; }
+        }
+        long _id;
+        public long id
         {
             get
             {
@@ -63,13 +69,11 @@ namespace Mig.Entity
             change = new List<string>();
         }
         public EntityBase()
-        {
-            //Init();
+        {           
             mode = "default";
         }
         public EntityBase(string pMode)
-        {
-            //Init();
+        {          
             mode = pMode;
         }
         public virtual void RefreshTable()
@@ -95,10 +99,8 @@ namespace Mig.Entity
         }
         public virtual void Save()
         {
-
             if (change.Count != 0)
-            {
-                
+            {                
                 string statement = SQL_UPD;
                 /*собрать Update*/
                 foreach (string st in change)
@@ -106,21 +108,48 @@ namespace Mig.Entity
                     statement += st;
                 }
                 statement += ("updated='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',");
-                statement += ("updated_by='" + "ARUDENKO" + "' ");
+                statement += ("updated_by='" + Pref.LoginName + "' ");
                 statement += "where (id=" + id.ToString() + ")";
                 /*чистим изменения*/
                 change.Clear();
                 /*обновляем*/
-                MySqlResultUpdate rs = new MySqlResultUpdate();
+                MySqlResultExec rs = new MySqlResultExec();
                 rs = MySqlUpdateData(statement, null);
                 if (rs.HasError)
                 {
                     LastErrorMessage = rs.ErrorText;
-                    throw new System.InvalidOperationException("Ошибка при обновлении контакта!");
+                    throw new System.InvalidOperationException("Ошибка при обновлении записи!");
                 }
 
             }
         }
+        public virtual void Add()
+        {
+            mode = "Add";
+            
+            string statement = SQL_INS;
+            /*собрать Update*/
+            statement += "(contact_id) VALUES("+ GetNextId().ToString()+");";
+            //statement += ("updated='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',");
+            //statement += ("updated_by='" + Pref.LoginName + "' ");
+            //statement += "where (id=" + id.ToString() + ")";
+            /*чистим изменения*/
+            //change.Clear();
+            /*обновляем*/
+            MySqlResultExec rs = new MySqlResultExec();
+            rs = MySqlUpdateData(statement, null);
+            if (rs.HasError)
+            {
+                LastErrorMessage = rs.ErrorText;
+                throw new System.InvalidOperationException("Ошибка при добавлении записи!");
+            }
+            id = rs.Result;
+            
+        }
+        public int GetNextId()
+        {
+            return 123;
+        }
 
-    }
+        }
 }

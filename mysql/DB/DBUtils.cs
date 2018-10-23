@@ -12,9 +12,9 @@ namespace Mig
     static class DBUtils
     {
         static string MySqlconnStr = "server=localhost;user=root;database=cmo;port=3306;password=123456;";
-        public class MySqlResultUpdate
+        public class MySqlResultExec
         {
-            //public DataTable ResultTbl;
+            public long Result;
             public string ErrorText;
             public bool HasError;
         }
@@ -24,6 +24,7 @@ namespace Mig
             public string ErrorText;           
             public bool HasError;
         }
+        
         static public MySqlResultTable MySqlGetData(string sql, List<object> param)
         {
             MySqlResultTable rw = new MySqlResultTable();
@@ -54,9 +55,9 @@ namespace Mig
             }
             return rw;
         }
-        static public MySqlResultUpdate MySqlUpdateData(string sql, List<object> param)
+        static public MySqlResultExec MySqlUpdateData(string sql, List<object> param)
         {
-            MySqlResultUpdate rw = new MySqlResultUpdate();
+            MySqlResultExec rw = new MySqlResultExec();
             MySqlConnection connection = new MySqlConnection(MySqlconnStr);
             MySqlCommand sqlCom = new MySqlCommand(sql, connection);
             try
@@ -72,6 +73,7 @@ namespace Mig
                     }
                 }
                 sqlCom.ExecuteNonQuery();
+                rw.Result = sqlCom.LastInsertedId;
 
 
                 connection.Close();

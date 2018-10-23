@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using mysql.Pref;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -22,9 +23,9 @@ namespace Mig.Entity
 
         public override void Init()
         {
-            base.Init();
-            SQL_SEL = "SELECT * FROM cmo.contact where id=@param1";
-            SQL_UPD = "UPDATE cmo.contact SET ";
+            base.Init();            
+           // SQL_SEL = "SELECT * FROM " + Pref.scheme+"."+ GetType().Name + " where id=@param1";
+            //SQL_UPD = "UPDATE " + Pref.scheme + "." + GetType().Name + " SET ";
         }
         public Contact()
         {
