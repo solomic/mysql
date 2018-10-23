@@ -65,6 +65,9 @@ namespace mysql
             Contact new_con = new Contact();
             new_con.Init();
             new_con.Add();
+            new_con.last_name = "sdfsdfsdfsdf";
+            new_con.first_name = "2222";
+            new_con.Save();
         }
     }
 }

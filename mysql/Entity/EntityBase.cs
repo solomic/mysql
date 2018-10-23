@@ -68,7 +68,8 @@ namespace Mig.Entity
             tbl = new DataTable();
             change = new List<string>();
             conn = new MySqlConnection(Pref.MySqlconnStr);
-            myTrans = conn.BeginTransaction();
+            conn.Open();
+           //
         }
         public EntityBase()
         {           
@@ -90,7 +91,7 @@ namespace Mig.Entity
         {
             change.Clear();
             MySqlResultTable rw_tmp = new MySqlResultTable();
-            rw_tmp = DBUtils.MySqlGetData(SQL_SEL, new List<object> { Row_id });
+            rw_tmp = DBUtils.MySqlGetData(conn,myTrans, SQL_SEL, new List<object> { Row_id });
             if (rw_tmp.HasError)
             {
                 LastErrorMessage = rw_tmp.ErrorText;
@@ -101,8 +102,11 @@ namespace Mig.Entity
         }
         public virtual void Save()
         {
+
             if (change.Count != 0)
-            {                
+            {
+                if (myTrans == null)
+                    myTrans = conn.BeginTransaction();       
                 string statement = SQL_UPD;
                 /*собрать Update*/
                 foreach (string st in change)
@@ -116,7 +120,7 @@ namespace Mig.Entity
                 change.Clear();
                 /*обновляем*/
                 MySqlResultExec rs = new MySqlResultExec();
-                rs = MySqlExecuteNonQuery(statement, null);
+                rs = MySqlExecuteNonQuery(conn, myTrans, statement, null);
                 if (rs.HasError)
                 {
                     myTrans.Rollback();
@@ -129,14 +133,15 @@ namespace Mig.Entity
         }
         public virtual void Add()
         {
-            mode = "Add";
-            
+            myTrans = conn.BeginTransaction();
+           
+             mode = "Add";            
             string statement = SQL_INS;
             /*собрать Update*/
             statement += "(contact_id) VALUES("+ GetNextId().ToString()+");";            
             /*обновляем*/
             MySqlResultExec rs = new MySqlResultExec();
-            rs = MySqlExecuteNonQuery(statement, null);
+            rs = MySqlExecuteNonQuery(conn, myTrans, statement, null);
             if (rs.HasError)
             {
                 LastErrorMessage = rs.ErrorText;
@@ -148,7 +153,7 @@ namespace Mig.Entity
         public int GetNextId()
         {
             MySqlResultScalar rw = new MySqlResultScalar();
-            rw = MySqlExecuteScalar(SQL_MAX_ID, null, "int");
+            rw = MySqlExecuteScalar(conn, myTrans, SQL_MAX_ID, null, "int");
             return (int)rw.Result+1;
         }
 

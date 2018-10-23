@@ -32,13 +32,13 @@ namespace Mig
             public bool HasError;
         }
         
-        static public MySqlResultTable MySqlGetData(string sql, List<object> param)
+        static public MySqlResultTable MySqlGetData(MySqlConnection connection, MySqlTransaction transaction, string sql, List<object> param)
         {
             MySqlResultTable rw = new MySqlResultTable();
-            MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
-            MySqlCommand sqlCom = new MySqlCommand(sql, connection);
+            //MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
+            MySqlCommand sqlCom = new MySqlCommand(sql, connection,transaction);
             try {
-                connection.Open();
+                //connection.Open();
                 int i = 1;
                 foreach (object prm in param)
                 {
@@ -49,7 +49,7 @@ namespace Mig
                 DataSet ds1 = new DataSet();
                 dataAdapter.Fill(ds1);
                 rw.ResultTbl = ds1.Tables[0];
-                connection.Close();
+                //connection.Close();
             }
             catch(Exception ex)
             {
@@ -58,20 +58,20 @@ namespace Mig
             }
             finally
             {
-                connection.Close();
+                //connection.Close();
             }
             return rw;
         }
 
         /*Выполнение sql запроса, возврат первой строки первого столбца*/
-        static public MySqlResultScalar MySqlExecuteScalar(string sql, List<object> param,string ret_type)
+        static public MySqlResultScalar MySqlExecuteScalar(MySqlConnection connection, MySqlTransaction transaction, string sql, List<object> param,string ret_type)
         {
             MySqlResultScalar rw = new MySqlResultScalar();
-            MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
-            MySqlCommand sqlCom = new MySqlCommand(sql, connection);
+            //MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
+            MySqlCommand sqlCom = new MySqlCommand(sql, connection,transaction);
             try
             {
-                connection.Open();
+                //connection.Open();
                 if (param != null)
                 {
                     int i = 1;
@@ -87,7 +87,7 @@ namespace Mig
                     rw.Result = (int)sqlCom.ExecuteScalar();
                 if (ret_type == "DateTime")
                     rw.Result = (DateTime)sqlCom.ExecuteScalar();
-                connection.Close();
+               // connection.Close();
             }
             catch (Exception ex)
             {
@@ -96,20 +96,20 @@ namespace Mig
             }
             finally
             {
-                connection.Close();
+                //connection.Close();
             }
             return rw;
         }
 
         /*Выполнение sql запроса без возврата данных, только id последней записи*/
-        static public MySqlResultExec MySqlExecuteNonQuery(string sql, List<object> param)
+        static public MySqlResultExec MySqlExecuteNonQuery(MySqlConnection connection, MySqlTransaction transaction, string sql, List<object> param)
         {
             MySqlResultExec rw = new MySqlResultExec();
-            MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
-            MySqlCommand sqlCom = new MySqlCommand(sql, connection);
+          //  MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
+            MySqlCommand sqlCom = new MySqlCommand(sql, connection,transaction);
             try
             {               
-                connection.Open();
+               // connection.Open();
                 if (param != null)
                 {
                     int i = 1;
@@ -123,7 +123,7 @@ namespace Mig
                 rw.Result = sqlCom.LastInsertedId;
 
 
-                connection.Close();
+               // connection.Close();
             }
             catch (Exception ex)
             {
@@ -132,7 +132,7 @@ namespace Mig
             }
             finally
             {
-                connection.Close();
+               // connection.Close();
             }
             return rw;
         }
