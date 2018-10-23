@@ -61,6 +61,8 @@ namespace Mig
             }
             return rw;
         }
+
+        /*Выполнение sql запроса, возврат первой строки первого столбца*/
         static public MySqlResultScalar MySqlExecuteScalar(string sql, List<object> param,string ret_type)
         {
             MySqlResultScalar rw = new MySqlResultScalar();
@@ -97,6 +99,8 @@ namespace Mig
             }
             return rw;
         }
+
+        /*Выполнение sql запроса без возврата данных, только id последней записи*/
         static public MySqlResultExec MySqlExecuteNonQuery(string sql, List<object> param)
         {
             MySqlResultExec rw = new MySqlResultExec();
