@@ -77,12 +77,12 @@ namespace Mig.Entity
 
         }
         /*--------------------------------------------------------*/
-        string _create_by;
-        public string create_by
+        string _created_by;
+        public string created_by
         {
             get
             {
-                return _create_by;
+                return _created_by;
             }
 
         }
