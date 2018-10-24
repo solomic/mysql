@@ -6,12 +6,14 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Mig.DB;
+
 
 namespace Mig.Entity
 {
     public partial class Contact: EntityBase
-    {        
+    {
+        addr_inter addressl;
+
         public void Validate()
         {
             /*валидация текущий свойств контакта*/
@@ -23,7 +25,9 @@ namespace Mig.Entity
 
         public override void Init()
         {
-            base.Init();                     
+            base.Init();
+            addressl = new addr_inter();
+            addressl.Init();
         }
         public Contact()
         {
@@ -37,6 +41,7 @@ namespace Mig.Entity
         {
             base.ReadFromDB(Row_id);
             RefreshData();
+            addressl.ReadFromDB(Row_id);
 
         }
         

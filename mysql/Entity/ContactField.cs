@@ -8,11 +8,7 @@ namespace Mig.Entity
 {
     public partial class Contact: EntityBase
     {
-
-        /*Поля таблицы*/
-        /*--------------------------------------------------------*/
         
-        /*--------------------------------------------------------*/
         int _contact_id;
         public int contact_id
         {

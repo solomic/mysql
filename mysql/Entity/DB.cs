@@ -17,13 +17,15 @@ namespace Mig
         
         public class MySqlResultExec
         {
-            public long Result;
+            public int Result;
             public string ErrorText;
             public bool HasError;
         }
         public class MySqlResultScalar
         {
-            public object Result;
+            public int ResultInt;
+            public string ResultString;
+            public DateTime ResultDateTime;
             public string ErrorText;
             public bool HasError;
         }
@@ -155,11 +157,13 @@ namespace Mig
                     }
                 }
                 if(ret_type == "string")
-                    rw.Result = (string)sqlCom.ExecuteScalar();
+                    rw.ResultString = sqlCom.ExecuteScalar().ToString();
                 if (ret_type == "int")
-                    rw.Result = (int)sqlCom.ExecuteScalar();
+                {                                           
+                    rw.ResultInt = Convert.ToInt16(sqlCom.ExecuteScalar());
+                }
                 if (ret_type == "DateTime")
-                    rw.Result = (DateTime)sqlCom.ExecuteScalar();               
+                    rw.ResultDateTime = Convert.ToDateTime(sqlCom.ExecuteScalar());               
             }
             catch (Exception ex)
             {
@@ -186,7 +190,7 @@ namespace Mig
                     }
                 }
                 sqlCom.ExecuteNonQuery();
-                rw.Result = sqlCom.LastInsertedId;              
+                rw.Result = Convert.ToInt32(sqlCom.LastInsertedId);              
             }
             catch (Exception ex)
             {

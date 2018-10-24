@@ -1,19 +1,29 @@
-﻿using System;
+﻿using mysql.Pref;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data;
-
 
 namespace Mig.Entity
 {
-    public partial class Address :EntityBase
+    public partial class addr_inter:EntityBase
     {
-        
-        bool _valid;
-        bool _change;
-        ///*----------------------------------------------------*/
+        List<Address> AddrList; 
+        int _address_id;       
+
+        public int address_id
+        {
+            get
+            {
+                return _address_id;
+            }
+            set
+            {
+                _address_id = value;
+                change.Add("address_id=" + _address_id + ",");
+            }
+        }
         public void Validate()
         {
             /*валидация текущий свойств*/
@@ -24,16 +34,20 @@ namespace Mig.Entity
         {
             base.Init();
         }
+        public override string SQL_SEL
+        {
+            get { return "SELECT * FROM " + Pref.Scheme + "." + GetType().Name.ToLower() + " where contact_id = @param1"; }
+        }
         public override void ReadFromDB(int Row_id)
         {
             base.ReadFromDB(Row_id);
-            RefreshData();
+            //RefreshData();
 
         }
         public override void RefreshTable()
         {
             tbl.Rows[0]["id"] = id;
-            tbl.Rows[0]["address_id"] =  _address_id;
+            tbl.Rows[0]["address_id"] = _address_id;
             //tbl.Rows[0]["last_name"] = _last_name;
             //tbl.Rows[0]["first_name"] = _first_name;
             //tbl.Rows[0]["second_name"] = _second_name;
@@ -66,8 +80,7 @@ namespace Mig.Entity
                 LastErrorMessage = ex.Message;
                 throw new System.InvalidOperationException("Ошибка: " + ex.Message);
             }
-            /*... все поля*/
-
+            
         }
     }
 }

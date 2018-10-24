@@ -54,6 +54,7 @@ namespace mysql
                 con.Validate();
                 con.Save();
                 dataGridView1.DataSource = con.GetDataTable();
+                con = null;
             }
             catch(Exception ex)
             {
@@ -69,15 +70,27 @@ namespace mysql
             //new_con.BeginTransaction();
             new_con.Add();
             new_con.last_name = Guid.NewGuid().ToString();
-            new_con.first_name = Guid.NewGuid().ToString();
+            new_con.first_name = Guid.NewGuid().ToString();                
             new_con.Save();
-            //new_con.RollbackTransaction();
-           // new_con.CommitTransaction();
+                //new_con.RollbackTransaction();
+                // new_con.CommitTransaction();
+                new_con = null;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Address adr = new Address();
+            adr.Init();
+            adr.Add();
+            
+            adr.full_address = Guid.NewGuid().ToString();
+            adr.Save();
+            adr = null;
         }
     }
 }

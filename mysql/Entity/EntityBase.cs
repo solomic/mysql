@@ -34,10 +34,10 @@ namespace Mig.Entity
         }
         public virtual string SQL_MAX_ID
         {
-            get { return "SELECT MAX("+ SQL_ENTITY_ID + ") FROM " + Pref.Scheme + "." + GetType().Name.ToLower() + ";"; }            
+            get { return "SELECT IFNULL(MAX("+ SQL_ENTITY_ID + "),0) FROM " + Pref.Scheme + "." + GetType().Name.ToLower() + ";"; }            
         }
-        long _id;
-        public long id
+        int _id;
+        public int id
         {
             get
             {
@@ -156,7 +156,7 @@ namespace Mig.Entity
         public virtual void Save()
         {
 
-            if (change.Count != 0)
+            if (change.Count != 0 || mode == "Add")
             {                  
                 string statement = SQL_UPD;
                 /*собрать Update*/
@@ -204,7 +204,7 @@ namespace Mig.Entity
         {
             MySqlResultScalar rw = new MySqlResultScalar();
             rw = MySqlExecuteScalar(SQL_MAX_ID, null, "int");
-            return (int)rw.Result+1;
+            return rw.ResultInt+1;
         }
         
 
