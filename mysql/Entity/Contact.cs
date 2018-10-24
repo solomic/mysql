@@ -23,13 +23,11 @@ namespace Mig.Entity
 
         public override void Init()
         {
-            base.Init();            
-           // SQL_SEL = "SELECT * FROM " + Pref.scheme+"."+ GetType().Name + " where id=@param1";
-            //SQL_UPD = "UPDATE " + Pref.scheme + "." + GetType().Name + " SET ";
+            base.Init();                     
         }
         public Contact()
         {
-            //Init();
+           
         }
         public Contact(string pMode):base(pMode)
         {
