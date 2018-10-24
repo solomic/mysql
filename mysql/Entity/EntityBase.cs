@@ -138,9 +138,7 @@ namespace Mig.Entity
         {
 
             if (change.Count != 0)
-            {
-                //if (myTrans == null)
-                //    myTrans = conn.BeginTransaction();       
+            {                  
                 string statement = SQL_UPD;
                 /*собрать Update*/
                 foreach (string st in change)
@@ -158,12 +156,11 @@ namespace Mig.Entity
                 MySqlResultExec rs = new MySqlResultExec();
                 rs = MySqlExecuteNonQuery(statement, null);
                 if (rs.HasError)
-                {
-                    //myTrans.Rollback();
+                {                   
                     LastErrorMessage = rs.ErrorText;
                     throw new System.InvalidOperationException("Ошибка при обновлении записи!\n\n" + rs.ErrorText);
                 }
-                //myTrans.Commit();
+               
 
             }
         }
@@ -184,7 +181,7 @@ namespace Mig.Entity
             id = rs.Result;
             
         }
-        public int GetNextId()
+        int GetNextId()
         {
             MySqlResultScalar rw = new MySqlResultScalar();
             rw = MySqlExecuteScalar(SQL_MAX_ID, null, "int");

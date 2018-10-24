@@ -39,9 +39,9 @@ namespace Mig.Entity
 
                 if (value != _last_name)
                 {
-                    string old = _last_name;
+                    //string old = _last_name;
                     _last_name = value==null?null:value.Trim();
-                    Audit(SQL_ENTITY_NAME, "last_name", old, _last_name);
+                   // Audit(SQL_ENTITY_NAME, "last_name", old, _last_name);
                     change.Add("last_name='" + _last_name + "',");                    
                     fio ="";                    
                 }

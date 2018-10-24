@@ -53,6 +53,7 @@ namespace mysql
                 con.birthday = dateTimePicker1.Value;
                 con.Validate();
                 con.Save();
+                dataGridView1.DataSource = con.GetDataTable();
             }
             catch(Exception ex)
             {
@@ -65,13 +66,13 @@ namespace mysql
             try { 
             Contact new_con = new Contact();
             new_con.Init();
-            new_con.BeginTransaction();
+            //new_con.BeginTransaction();
             new_con.Add();
             new_con.last_name = Guid.NewGuid().ToString();
             new_con.first_name = Guid.NewGuid().ToString();
             new_con.Save();
-            new_con.RollbackTransaction();
-            //new_con.CommitTransaction();
+            //new_con.RollbackTransaction();
+           // new_con.CommitTransaction();
             }
             catch (Exception ex)
             {

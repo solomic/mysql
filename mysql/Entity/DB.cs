@@ -117,7 +117,7 @@ namespace Mig
         public MySqlResultTable MySqlGetData(string sql, List<object> param)
         {
             MySqlResultTable rw = new MySqlResultTable();     
-            MySqlCommand sqlCom = new MySqlCommand(sql, connection);
+            MySqlCommand sqlCom = new MySqlCommand(sql, connection, transaction);
             try {               
                 int i = 1;
                 foreach (object prm in param)
@@ -142,7 +142,7 @@ namespace Mig
         public MySqlResultScalar MySqlExecuteScalar(string sql, List<object> param,string ret_type)
         {
             MySqlResultScalar rw = new MySqlResultScalar();          
-            MySqlCommand sqlCom = new MySqlCommand(sql, connection);
+            MySqlCommand sqlCom = new MySqlCommand(sql, connection, transaction);
             try
             {               
                 if (param != null)
@@ -173,7 +173,7 @@ namespace Mig
         public MySqlResultExec MySqlExecuteNonQuery(string sql, List<object> param)
         {
             MySqlResultExec rw = new MySqlResultExec();
-            MySqlCommand sqlCom = new MySqlCommand(sql, connection);
+            MySqlCommand sqlCom = new MySqlCommand(sql, connection,transaction);
             try
             {       
                 if (param != null)
