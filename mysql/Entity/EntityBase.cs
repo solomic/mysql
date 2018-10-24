@@ -104,9 +104,9 @@ namespace Mig.Entity
             string old = old_value == null ? "" : old_value.ToString();
             string new_v = new_value == null ? "" : new_value.ToString();
             MySqlResultExec rs = new MySqlResultExec();
-            string statement = "INSERT INTO " + Pref.Scheme+"."+"audit " + "(tbl,clmn,old_value,new_value,updated_by)"+
-                " VALUES(@param1,@param2,@param3,@param4,@param5);";
-            rs = MySqlExecuteNonQuery(statement, new List<object> { entity, field, old, new_v, Pref.LoginName });
+            string statement = "INSERT INTO " + Pref.Scheme+"."+"audit " + "(tbl,clmn,old_value,new_value,updated_by,created_by)"+
+                " VALUES(@param1,@param2,@param3,@param4,@param5,@param6);";
+            rs = MySqlExecuteNonQuery(statement, new List<object> { entity, field, old, new_v, Pref.LoginName, Pref.LoginName });
             if (rs.HasError)
             {
                 LastErrorMessage = rs.ErrorText;
