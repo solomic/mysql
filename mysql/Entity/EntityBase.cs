@@ -169,7 +169,7 @@ namespace Mig.Entity
             mode = "Add";            
             string statement = SQL_INS;
             /*собрать INSERT + дефолтные поля*/
-            statement += "("+ SQL_ENTITY_ID+",status) VALUES(" + GetNextId().ToString()+",'Blank');";            
+            statement += "("+ SQL_ENTITY_ID+",status,created_by) VALUES(" + GetNextId().ToString()+",'Blank','"+Pref.LoginName+"');";            
             /*обновляем*/
             MySqlResultExec rs = new MySqlResultExec();
             rs = MySqlExecuteNonQuery(statement, null);
