@@ -30,7 +30,7 @@ namespace mysql
                 if(con.birthday != null)
                     dateTimePicker1.Value = Convert.ToDateTime(con.birthday);
 
-                dataGridView1.DataSource = con.GetDataTable();
+               
             }
             catch(Exception ex)
             {

@@ -11,10 +11,18 @@ using static Mig.DBUtils;
 namespace Mig.Entity
 {
     public class EntityBase
-    { 
+    {
+        public virtual string SQL_ENTITY_NAME
+        {
+            get { return GetType().Name.ToLower() ; }
+        }
+        public virtual string SQL_ENTITY_ID
+        {
+            get { return GetType().Name.ToLower() + "_id"; }
+        }
         public virtual string SQL_SEL
         {
-            get { return "SELECT* FROM " + Pref.Scheme + "."+ GetType().Name.ToLower() + " where id = @param1"; }          
+            get { return "SELECT * FROM " + Pref.Scheme + "."+ GetType().Name.ToLower() + " where id = @param1"; }          
         }
         public virtual string SQL_UPD
         {
@@ -40,6 +48,25 @@ namespace Mig.Entity
                 _id = value;
             }
         }
+        DateTime _updated;
+        public DateTime updated
+        {
+            get
+            {
+                return _updated;
+            }
+
+        }
+        /*--------------------------------------------------------*/
+        string _updated_by;
+        public string updated_by
+        {
+            get
+            {
+                return _updated_by;
+            }
+
+        }
         string _LastErrorMessage;
         public string LastErrorMessage
         {
@@ -50,12 +77,22 @@ namespace Mig.Entity
         public string mode;
         public DataTable tbl;
         public List<string> change;
-        MySqlConnection conn;
+       // MySqlConnection conn;
         MySqlTransaction myTrans;
 
-        public void Audit(string field, string value)
+        public void Audit(string entity,string field, object old_value, object new_value)
         {
-
+            string old = old_value == null ? "" : old_value.ToString();
+            string new_v = new_value == null ? "" : new_value.ToString();
+            MySqlResultExec rs = new MySqlResultExec();
+            string statement = "INSERT INTO " + Pref.Scheme+"."+"audit " + "(tbl,clmn,old_value,new_value,updated_by)"+
+                " VALUES(@param1,@param2,@param3,@param4,@param5);";
+            rs = MySqlExecuteNonQuery(statement, new List<object> { entity, field, old, new_v, Pref.LoginName });
+            if (rs.HasError)
+            {
+                LastErrorMessage = rs.ErrorText;
+                throw new System.InvalidOperationException("Ошибка при добавлении записи аудита!");
+            }
         }
         public DataTable GetDataTable()
         {
@@ -67,9 +104,9 @@ namespace Mig.Entity
         {
             tbl = new DataTable();
             change = new List<string>();
-            conn = new MySqlConnection(Pref.MySqlconnStr);
-            conn.Open();
-           //
+            //conn = new MySqlConnection(Pref.MySqlconnStr);
+           // conn.Open();
+          
         }
         public EntityBase()
         {           
@@ -91,7 +128,7 @@ namespace Mig.Entity
         {
             change.Clear();
             MySqlResultTable rw_tmp = new MySqlResultTable();
-            rw_tmp = DBUtils.MySqlGetData(conn,myTrans, SQL_SEL, new List<object> { Row_id });
+            rw_tmp = DBUtils.MySqlGetData(SQL_SEL, new List<object> { Row_id });
             if (rw_tmp.HasError)
             {
                 LastErrorMessage = rw_tmp.ErrorText;
@@ -105,8 +142,8 @@ namespace Mig.Entity
 
             if (change.Count != 0)
             {
-                if (myTrans == null)
-                    myTrans = conn.BeginTransaction();       
+                //if (myTrans == null)
+                //    myTrans = conn.BeginTransaction();       
                 string statement = SQL_UPD;
                 /*собрать Update*/
                 foreach (string st in change)
@@ -115,33 +152,33 @@ namespace Mig.Entity
                 }
                 statement += ("updated='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',");
                 statement += ("updated_by='" + Pref.LoginName + "' ");
+                if (mode == "Add")
+                    statement += (",status='Active' ");
                 statement += "where (id=" + id.ToString() + ")";
                 /*чистим изменения*/
                 change.Clear();
                 /*обновляем*/
                 MySqlResultExec rs = new MySqlResultExec();
-                rs = MySqlExecuteNonQuery(conn, myTrans, statement, null);
+                rs = MySqlExecuteNonQuery(statement, null);
                 if (rs.HasError)
                 {
-                    myTrans.Rollback();
+                    //myTrans.Rollback();
                     LastErrorMessage = rs.ErrorText;
                     throw new System.InvalidOperationException("Ошибка при обновлении записи!");
                 }
-                myTrans.Commit();
+                //myTrans.Commit();
 
             }
         }
         public virtual void Add()
         {
-            myTrans = conn.BeginTransaction();
-           
-             mode = "Add";            
+            mode = "Add";            
             string statement = SQL_INS;
-            /*собрать Update*/
-            statement += "(contact_id) VALUES("+ GetNextId().ToString()+");";            
+            /*собрать INSERT + дефолтные поля*/
+            statement += "("+ SQL_ENTITY_ID+",status) VALUES(" + GetNextId().ToString()+",'Blank');";            
             /*обновляем*/
             MySqlResultExec rs = new MySqlResultExec();
-            rs = MySqlExecuteNonQuery(conn, myTrans, statement, null);
+            rs = MySqlExecuteNonQuery(statement, null);
             if (rs.HasError)
             {
                 LastErrorMessage = rs.ErrorText;
@@ -153,8 +190,14 @@ namespace Mig.Entity
         public int GetNextId()
         {
             MySqlResultScalar rw = new MySqlResultScalar();
-            rw = MySqlExecuteScalar(conn, myTrans, SQL_MAX_ID, null, "int");
+            rw = MySqlExecuteScalar(SQL_MAX_ID, null, "int");
             return (int)rw.Result+1;
+        }
+        public void Edit()
+        {
+
+            //myTrans = conn.BeginTransaction();
+
         }
 
         

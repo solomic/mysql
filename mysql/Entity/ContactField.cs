@@ -39,9 +39,11 @@ namespace Mig.Entity
 
                 if (value != _last_name)
                 {
+                    string old = _last_name;
                     _last_name = value==null?null:value.Trim();
-                    change.Add("last_name='" + _last_name + "',");
-                    fio="";                    
+                    Audit(SQL_ENTITY_NAME, "last_name", old, _last_name);
+                    change.Add("last_name='" + _last_name + "',");                    
+                    fio ="";                    
                 }
               
             }
@@ -118,25 +120,7 @@ namespace Mig.Entity
             }
         }
         /*--------------------------------------------------------*/
-        DateTime _updated;
-        public DateTime updated
-        {
-            get
-            {
-                return _updated;
-            }
-           
-        }
-        /*--------------------------------------------------------*/
-        string _updated_by;
-        public string updated_by
-        {
-            get
-            {
-                return _updated_by;
-            }
-           
-        }
+        
         /*--------------------------------------------------------*/
         string _sex;
         public string sex
