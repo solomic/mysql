@@ -62,12 +62,18 @@ namespace mysql
 
         private void button3_Click(object sender, EventArgs e)
         {
+            try { 
             Contact new_con = new Contact();
             new_con.Init();
             new_con.Add();
             new_con.last_name = "sdfsdfsdfsdf";
             new_con.first_name = "2222";
             new_con.Save();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

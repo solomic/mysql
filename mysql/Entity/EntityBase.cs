@@ -6,11 +6,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Mig.DBUtils;
+using static Mig.DB;
 
 namespace Mig.Entity
 {
-    public class EntityBase
+    public class EntityBase: DB
     {
         public virtual string SQL_ENTITY_NAME
         {
@@ -78,7 +78,7 @@ namespace Mig.Entity
         public DataTable tbl;
         public List<string> change;
        // MySqlConnection conn;
-        MySqlTransaction myTrans;
+       // MySqlTransaction myTrans;
 
         public void Audit(string entity,string field, object old_value, object new_value)
         {
@@ -91,7 +91,7 @@ namespace Mig.Entity
             if (rs.HasError)
             {
                 LastErrorMessage = rs.ErrorText;
-                throw new System.InvalidOperationException("Ошибка при добавлении записи аудита!");
+                throw new System.InvalidOperationException("Ошибка при добавлении записи аудита!\n\n"+rs.ErrorText);
             }
         }
         public DataTable GetDataTable()
@@ -104,9 +104,6 @@ namespace Mig.Entity
         {
             tbl = new DataTable();
             change = new List<string>();
-            //conn = new MySqlConnection(Pref.MySqlconnStr);
-           // conn.Open();
-          
         }
         public EntityBase()
         {           
@@ -128,7 +125,7 @@ namespace Mig.Entity
         {
             change.Clear();
             MySqlResultTable rw_tmp = new MySqlResultTable();
-            rw_tmp = DBUtils.MySqlGetData(SQL_SEL, new List<object> { Row_id });
+            rw_tmp = MySqlGetData(SQL_SEL, new List<object> { Row_id });
             if (rw_tmp.HasError)
             {
                 LastErrorMessage = rw_tmp.ErrorText;
@@ -164,7 +161,7 @@ namespace Mig.Entity
                 {
                     //myTrans.Rollback();
                     LastErrorMessage = rs.ErrorText;
-                    throw new System.InvalidOperationException("Ошибка при обновлении записи!");
+                    throw new System.InvalidOperationException("Ошибка при обновлении записи!\n\n" + rs.ErrorText);
                 }
                 //myTrans.Commit();
 
@@ -182,7 +179,7 @@ namespace Mig.Entity
             if (rs.HasError)
             {
                 LastErrorMessage = rs.ErrorText;
-                throw new System.InvalidOperationException("Ошибка при добавлении записи!");
+                throw new System.InvalidOperationException("Ошибка при добавлении новой записи!\n\n" + rs.ErrorText);
             }
             id = rs.Result;
             
@@ -193,14 +190,6 @@ namespace Mig.Entity
             rw = MySqlExecuteScalar(SQL_MAX_ID, null, "int");
             return (int)rw.Result+1;
         }
-        public void Edit()
-        {
-
-            //myTrans = conn.BeginTransaction();
-
-        }
-
-        
         
 
         }

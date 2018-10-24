@@ -10,8 +10,10 @@ using System.Threading.Tasks;
 
 namespace Mig
 {
-    static class DBUtils
+    public class DB
     {
+        MySqlConnection connection;
+        MySqlTransaction tran;
         
         public class MySqlResultExec
         {
@@ -31,14 +33,54 @@ namespace Mig
             public string ErrorText;           
             public bool HasError;
         }
-        
-        static public MySqlResultTable MySqlGetData(string sql, List<object> param)
+        ~DB()
+        {
+            CloseConnect();
+        }
+        public DB()
+        {
+            try
+            {
+                connection = new MySqlConnection(Pref.MySqlconnStr);
+                connection.Open();
+            }
+            catch(Exception ex)
+            {
+                throw new System.InvalidOperationException("Ошибка подключения к БД!\n\n" + ex.Message);
+            }
+        }
+
+        public void Reconnect()
+        {
+            try
+            {
+                if (connection.State!=ConnectionState.Open)
+                    connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw new System.InvalidOperationException("Ошибка подключения к БД!\n\n" + ex.Message);
+            }
+        }
+        public void CloseConnect()
+        {
+            try
+            {
+                if (connection.State != ConnectionState.Closed)
+                    connection.Close();
+            }
+            catch (Exception ex)
+            {
+                throw new System.InvalidOperationException("Ошибка закрытия подключения БД!\n\n" + ex.Message);
+            }
+        }
+        public MySqlResultTable MySqlGetData(string sql, List<object> param)
         {
             MySqlResultTable rw = new MySqlResultTable();
-            MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
+           // MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
             MySqlCommand sqlCom = new MySqlCommand(sql, connection);
             try {
-                connection.Open();
+                //connection.Open();
                 int i = 1;
                 foreach (object prm in param)
                 {
@@ -49,29 +91,29 @@ namespace Mig
                 DataSet ds1 = new DataSet();
                 dataAdapter.Fill(ds1);
                 rw.ResultTbl = ds1.Tables[0];
-                connection.Close();
+               // connection.Close();
             }
             catch(Exception ex)
             {
                 rw.HasError = true;
-                rw.ErrorText = ex.ToString();
+                rw.ErrorText = ex.Message;
             }
             finally
             {
-                connection.Close();
+                //connection.Close();
             }
             return rw;
         }
 
         /*Выполнение sql запроса, возврат первой строки первого столбца*/
-        static public MySqlResultScalar MySqlExecuteScalar(string sql, List<object> param,string ret_type)
+        public MySqlResultScalar MySqlExecuteScalar(string sql, List<object> param,string ret_type)
         {
             MySqlResultScalar rw = new MySqlResultScalar();
-            MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
+            //MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
             MySqlCommand sqlCom = new MySqlCommand(sql, connection);
             try
             {
-                connection.Open();
+               // connection.Open();
                 if (param != null)
                 {
                     int i = 1;
@@ -87,29 +129,30 @@ namespace Mig
                     rw.Result = (int)sqlCom.ExecuteScalar();
                 if (ret_type == "DateTime")
                     rw.Result = (DateTime)sqlCom.ExecuteScalar();
-                connection.Close();
+               // connection.Close();
             }
             catch (Exception ex)
             {
                 rw.HasError = true;
-                rw.ErrorText = ex.ToString();
+                rw.ErrorText = ex.Message;
+
             }
             finally
             {
-                connection.Close();
+               // connection.Close();
             }
             return rw;
         }
 
         /*Выполнение sql запроса без возврата данных, только id последней записи*/
-        static public MySqlResultExec MySqlExecuteNonQuery(string sql, List<object> param)
+        public MySqlResultExec MySqlExecuteNonQuery(string sql, List<object> param)
         {
             MySqlResultExec rw = new MySqlResultExec();
-            MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
+            //MySqlConnection connection = new MySqlConnection(Pref.MySqlconnStr);
             MySqlCommand sqlCom = new MySqlCommand(sql, connection);
             try
             {               
-                connection.Open();
+               // connection.Open();
                 if (param != null)
                 {
                     int i = 1;
@@ -121,16 +164,16 @@ namespace Mig
                 }
                 sqlCom.ExecuteNonQuery();
                 rw.Result = sqlCom.LastInsertedId;
-                connection.Close();
+               // connection.Close();
             }
             catch (Exception ex)
             {
                 rw.HasError = true;
-                rw.ErrorText = ex.ToString();
+                rw.ErrorText = ex.Message;
             }
             finally
             {
-                connection.Close();
+                //connection.Close();
             }
             return rw;
         }
