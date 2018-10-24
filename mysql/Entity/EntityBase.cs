@@ -67,6 +67,25 @@ namespace Mig.Entity
             }
 
         }
+        DateTime _created;
+        public DateTime created
+        {
+            get
+            {
+                return _created;
+            }
+
+        }
+        /*--------------------------------------------------------*/
+        string _create_by;
+        public string create_by
+        {
+            get
+            {
+                return _create_by;
+            }
+
+        }
         string _LastErrorMessage;
         public string LastErrorMessage
         {
