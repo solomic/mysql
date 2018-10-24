@@ -65,10 +65,13 @@ namespace mysql
             try { 
             Contact new_con = new Contact();
             new_con.Init();
+            new_con.BeginTransaction();
             new_con.Add();
-            new_con.last_name = "sdfsdfsdfsdf";
-            new_con.first_name = "2222";
+            new_con.last_name = Guid.NewGuid().ToString();
+            new_con.first_name = Guid.NewGuid().ToString();
             new_con.Save();
+            new_con.RollbackTransaction();
+            //new_con.CommitTransaction();
             }
             catch (Exception ex)
             {
