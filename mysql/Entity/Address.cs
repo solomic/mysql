@@ -10,31 +10,31 @@ namespace Mig.Entity
 {
     class Address
     {
-        //int         _Id;
-        //string      _FullAddress;
-        //string      _Code;
-        //string      _KladrCode;
-        //DateTime    _Created;
-        //string      _CreatedBy;
-        //DateTime    _Updated;
-        //string      _UpdatedBy;
-        //string      _Obl;
-        //string      _Rayon;
-        //string      _Town;
-        //string      _Street;
-        //string      _House;
-        //string      _Corp;
-        //string      _Stroenie;
-        //string      _Flat;
-        //string      _SocrObl;
-        //string      _SocrRayon;
-        //string      _SocrTown;
-        //string      _SocrStreet;
-        //string      _Status;
-        //string      _pin;
-        //bool        _Deleted;
-        //bool        _Valid;
-        //bool        _Change;
+        int _Id;
+        string _FullAddress;
+        string _Code;
+        string _KladrCode;
+        DateTime _Created;
+        string _CreatedBy;
+        DateTime _Updated;
+        string _UpdatedBy;
+        string _Obl;
+        string _Rayon;
+        string _Town;
+        string _Street;
+        string _House;
+        string _Corp;
+        string _Stroenie;
+        string _Flat;
+        string _SocrObl;
+        string _SocrRayon;
+        string _SocrTown;
+        string _SocrStreet;
+        string _Status;
+        string _pin;
+        bool _Deleted;
+        bool _Valid;
+        bool _Change;
         ///*----------------------------------------------------*/
         //DataRow rw;
         ///*----------------------------------------------------*/
@@ -61,9 +61,9 @@ namespace Mig.Entity
         ///*----------------------------------------------------*/
         //public Address()
         //{
-            
+
         //    rw = new DataTable().NewRow();
-            
+
         //    //cl.DataType = System.Type.GetType("System.Int32");
         //    //cl.ColumnName = "id";
         //}
