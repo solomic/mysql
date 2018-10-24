@@ -34,7 +34,7 @@ namespace Mig.Entity
         }
         public virtual string SQL_MAX_ID
         {
-            get { return "SELECT MAX(id) FROM " + Pref.Scheme + "." + GetType().Name.ToLower() + ";"; }            
+            get { return "SELECT MAX("+ SQL_ENTITY_ID + ") FROM " + Pref.Scheme + "." + GetType().Name.ToLower() + ";"; }            
         }
         long _id;
         public long id
@@ -169,7 +169,7 @@ namespace Mig.Entity
             mode = "Add";            
             string statement = SQL_INS;
             /*собрать INSERT + дефолтные поля*/
-            statement += "("+ SQL_ENTITY_ID+",status,created_by) VALUES(" + GetNextId().ToString()+",'Blank','"+Pref.LoginName+"');";            
+            statement += "("+ SQL_ENTITY_ID+",status,created_by) VALUES(" + GetNextEntityId().ToString()+",'Blank','"+Pref.LoginName+"');";            
             /*обновляем*/
             MySqlResultExec rs = new MySqlResultExec();
             rs = MySqlExecuteNonQuery(statement, null);
@@ -181,7 +181,7 @@ namespace Mig.Entity
             id = rs.Result;
             
         }
-        int GetNextId()
+        int GetNextEntityId()
         {
             MySqlResultScalar rw = new MySqlResultScalar();
             rw = MySqlExecuteScalar(SQL_MAX_ID, null, "int");
