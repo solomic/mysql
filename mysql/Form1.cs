@@ -23,7 +23,6 @@ namespace mysql
             try
             {
                 con = new Contact();
-                con.Init();
                 con.ReadFromDB(1);
                 textBox1.Text = con.id.ToString();
                 textBox2.Text = con.last_name;
@@ -66,7 +65,6 @@ namespace mysql
         {
             try { 
             Contact new_con = new Contact();
-            new_con.Init();
             //new_con.BeginTransaction();
             new_con.Add();
             new_con.last_name = Guid.NewGuid().ToString();
@@ -85,7 +83,6 @@ namespace mysql
         private void button4_Click(object sender, EventArgs e)
         {
             Address adr = new Address();
-            adr.Init();
             adr.Add();
             
             adr.full_address = Guid.NewGuid().ToString();

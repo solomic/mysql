@@ -127,10 +127,12 @@ namespace Mig.Entity
         public EntityBase()
         {           
             mode = "default";
+            Init();
         }
         public EntityBase(string pMode)
         {          
             mode = pMode;
+            Init();
         }
         public virtual void RefreshTable()
         {

@@ -27,15 +27,15 @@ namespace Mig.Entity
         {
             base.Init();
             AddrInter = new Addr_inter();
-            AddrInter.Init();
+            //AddrInter.Init();
         }
         public Contact()
         {
-           
+            Init();
         }
         public Contact(string pMode):base(pMode)
         {
-            
+            Init();
         }
         public override void ReadFromDB(int Row_id)
         {

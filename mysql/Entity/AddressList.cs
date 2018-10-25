@@ -11,6 +11,11 @@ namespace Mig.Entity
     public partial class Addr_inter:EntityBase
     {
         List<Address> Addr; 
+
+        public Addr_inter()
+        {
+            Init();
+        }
         int _address_id;
         int _contact_id;
         public int address_id

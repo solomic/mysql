@@ -30,6 +30,10 @@ namespace Mig.Entity
             RefreshData();
 
         }
+        public Address()
+        {
+            Init();
+        }
         public override void RefreshTable()
         {
             tbl.Rows[0]["id"] = id;
