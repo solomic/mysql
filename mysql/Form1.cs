@@ -24,8 +24,9 @@ namespace mysql
             try
             {
                 DbCon.Open();
+                DbCon.BeginTransaction();
                 con = new Contact();
-                con.ReadFromDB(1);
+                con.ReadFromDB(47);
                 textBox1.Text = con.id.ToString();
                 textBox2.Text = con.last_name;
                 if(con.birthday != null)
@@ -55,6 +56,7 @@ namespace mysql
                 con.Validate();
                 con.Save();
                 dataGridView1.DataSource = con.GetDataTable();
+                DbCon.RollbackTransaction();
                 con = null;
             }
             catch(Exception ex)
