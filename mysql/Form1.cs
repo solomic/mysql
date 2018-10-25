@@ -25,7 +25,7 @@ namespace mysql
             {
                 DbCon.Open();
                 DbCon.BeginTransaction();
-                con = new Contact();
+                con = new Contact(47);
                 con.ReadFromDB(47);
                 textBox1.Text = con.id.ToString();
                 textBox2.Text = con.last_name;
@@ -68,7 +68,7 @@ namespace mysql
         private void button3_Click(object sender, EventArgs e)
         {
             try { 
-            Contact new_con = new Contact();
+            Contact new_con = new Contact(47);
             //new_con.BeginTransaction();
             new_con.Add();
             new_con.last_name = Guid.NewGuid().ToString();

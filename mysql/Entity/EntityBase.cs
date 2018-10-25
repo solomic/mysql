@@ -12,6 +12,7 @@ namespace Mig.Entity
 {
     public class EntityBase: DB
     {
+        public int CONTACT_ID;
         public virtual string SQL_ENTITY_NAME
         {
             get { return GetType().Name.ToLower() ; }
@@ -129,11 +130,7 @@ namespace Mig.Entity
             mode = "default";
             Init();
         }
-        public EntityBase(string pMode)
-        {          
-            mode = pMode;
-            Init();
-        }
+      
         public virtual void RefreshTable()
         {
             /*заполнение таблицы данными из свойств*/

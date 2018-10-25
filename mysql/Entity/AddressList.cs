@@ -10,11 +10,14 @@ namespace Mig.Entity
 {
     public partial class Addr_inter:EntityBase
     {
-        List<Address> Addr; 
+        List<Address> Addr;
+        public DataTable AllAddress;
+        public int CONTACT_ID;
 
-        public Addr_inter()
+        public Addr_inter(int cnt_id)
         {
             Init();
+            CONTACT_ID = cnt_id;
         }
         int _address_id;
         int _contact_id;
@@ -52,16 +55,34 @@ namespace Mig.Entity
         {
             base.Init();
             Addr = new List<Address>();
+            AllAddress = new DataTable();
         }
-        public override string SQL_SEL
+
+        public string SQL_SEL_ALL_ADDR
         {
-            get { return "SELECT * FROM " + Pref.Scheme + "." + GetType().Name.ToLower() + " where contact_id = @param1"; }
+            // Pref.Scheme + "." + GetType().Name.ToLower() +
+            get { return "SELECT a.full_address,ai.status FROM cmo.addr_inter ai "+
+                    " join cmo.address a ON a.address_id=ai.address_id "+
+                    " where ai.contact_id = @param1"; }
         }
         public override void ReadFromDB(int Row_id)
         {
             base.ReadFromDB(Row_id);
             RefreshData();
 
+        }
+
+        public void LoadAllAddress()
+        {
+            MySqlResultTable rw_tmp = new MySqlResultTable();
+            rw_tmp = MySqlGetData(SQL_SEL_ALL_ADDR, new List<object> { CONTACT_ID });
+            if (rw_tmp.HasError)
+            {
+                LastErrorMessage = rw_tmp.ErrorText;
+                throw new System.InvalidOperationException("Ошибка чтения из БД!");
+            }
+            /*Обновляем внутренние переменные*/
+            AllAddress = rw_tmp.ResultTbl;
         }
         public override void RefreshTable()
         {
@@ -82,6 +103,7 @@ namespace Mig.Entity
         {
             try
             {
+                Addr.Clear();
                 for (int i = 0; i < tbl.Rows.Count; i++)
                 {
                     Addr.Add(new Address());
