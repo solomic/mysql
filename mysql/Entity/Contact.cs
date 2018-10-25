@@ -27,20 +27,20 @@ namespace Mig.Entity
         public override void Init()
         {
             base.Init();
-            AddrInter = new Addr_inter(CONTACT_ID);
+            AddrInter = new Addr_inter();
             //AddrInter.Init();
         }
-        public Contact(int cnt_id)
+        public Contact(int contact_id_in)
         {
-            Init();
-            CONTACT_ID = cnt_id;
+            CONTACT_ID = contact_id_in;
+            Init();           
         }
         
         public override void ReadFromDB(int Row_id)
         {
             base.ReadFromDB(Row_id);
             RefreshData();
-            AddrInter.ReadFromDB(Row_id);
+            AddrInter.ReadFromDB(CONTACT_ID);
 
         }
         

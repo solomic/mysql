@@ -26,7 +26,7 @@ namespace mysql
                 DbCon.Open();
                 DbCon.BeginTransaction();
                 con = new Contact(47);
-                con.ReadFromDB(47);
+                con.ReadFromDB(48);
                 textBox1.Text = con.id.ToString();
                 textBox2.Text = con.last_name;
                 if(con.birthday != null)

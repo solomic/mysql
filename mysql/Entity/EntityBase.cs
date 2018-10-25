@@ -97,8 +97,6 @@ namespace Mig.Entity
         public string mode;
         public DataTable tbl;
         public List<string> change;
-       // MySqlConnection conn;
-       // MySqlTransaction myTrans;
 
         public void Audit(string entity,string field, object old_value, object new_value)
         {

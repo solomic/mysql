@@ -11,13 +11,11 @@ namespace Mig.Entity
     public partial class Addr_inter:EntityBase
     {
         List<Address> Addr;
-        public DataTable AllAddress;
-        public int CONTACT_ID;
+        public DataTable AllAddress;       
 
-        public Addr_inter(int cnt_id)
+        public Addr_inter()
         {
-            Init();
-            CONTACT_ID = cnt_id;
+            Init();           
         }
         int _address_id;
         int _contact_id;
@@ -57,7 +55,10 @@ namespace Mig.Entity
             Addr = new List<Address>();
             AllAddress = new DataTable();
         }
-
+        public override string SQL_SEL
+        {
+            get { return "SELECT * FROM " + Pref.Scheme + "." + GetType().Name.ToLower() + " where contact_id = @param1"; }
+        }
         public string SQL_SEL_ALL_ADDR
         {
             // Pref.Scheme + "." + GetType().Name.ToLower() +
@@ -65,9 +66,10 @@ namespace Mig.Entity
                     " join cmo.address a ON a.address_id=ai.address_id "+
                     " where ai.contact_id = @param1"; }
         }
-        public override void ReadFromDB(int Row_id)
+        public override void ReadFromDB(int contact_id_in)
         {
-            base.ReadFromDB(Row_id);
+            base.ReadFromDB(contact_id_in);
+
             RefreshData();
 
         }
