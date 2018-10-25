@@ -1,4 +1,5 @@
 ﻿using Mig.Entity;
+using mysql.Pref;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,7 @@ namespace mysql
         {
             try
             {
+                DbCon.Open();
                 con = new Contact();
                 con.ReadFromDB(1);
                 textBox1.Text = con.id.ToString();
