@@ -12,7 +12,7 @@ namespace Mig.Entity
 {
     public partial class Contact: EntityBase
     {
-        addr_inter addressl;
+        Addr_inter AddrInter;
 
         public void Validate()
         {
@@ -26,8 +26,8 @@ namespace Mig.Entity
         public override void Init()
         {
             base.Init();
-            addressl = new addr_inter();
-            addressl.Init();
+            AddrInter = new Addr_inter();
+            AddrInter.Init();
         }
         public Contact()
         {
@@ -41,7 +41,7 @@ namespace Mig.Entity
         {
             base.ReadFromDB(Row_id);
             RefreshData();
-            addressl.ReadFromDB(Row_id);
+            AddrInter.ReadFromDB(Row_id);
 
         }
         
