@@ -49,44 +49,7 @@ namespace Mig.Entity
                 _id = value;
             }
         }
-        DateTime _updated;
-        public DateTime updated
-        {
-            get
-            {
-                return _updated;
-            }
-
-        }
-        /*--------------------------------------------------------*/
-        string _updated_by;
-        public string updated_by
-        {
-            get
-            {
-                return _updated_by;
-            }
-
-        }
-        DateTime _created;
-        public DateTime created
-        {
-            get
-            {
-                return _created;
-            }
-
-        }
-        /*--------------------------------------------------------*/
-        string _created_by;
-        public string created_by
-        {
-            get
-            {
-                return _created_by;
-            }
-
-        }
+        
         string _LastErrorMessage;
         public string LastErrorMessage
         {
