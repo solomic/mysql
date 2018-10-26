@@ -10,37 +10,116 @@ using System.Threading.Tasks;
 
 namespace Mig
 {
-    public class DB
+    public class MySqlResultExec
     {
+        public int Result;
+        public string ErrorText;
+        public bool HasError;
+    }
+    public class MySqlResultScalar
+    {
+        public int ResultInt;
+        public string ResultString;
+        public DateTime ResultDateTime;
+        public string ErrorText;
+        public bool HasError;
+    }
+    public class MySqlResultTable
+    {
+        public DataTable ResultTbl;
+        public string ErrorText;
+        public bool HasError;
+    }
+    public static class DB
+    {
+        public static MySqlConnection connection;
+        public static MySqlTransaction transaction;
+
+        public static void Open()
+        {
+            try
+            {
+                connection = new MySqlConnection(Pref.MySqlconnStr);
+                connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw new System.InvalidOperationException("Ошибка подключения к БД!\n\n" + ex.Message);
+            }
+        }
+        public static void Reconnect()
+        {
+            try
+            {
+                if (connection.State != ConnectionState.Open)
+                    connection.Open();
+            }
+            catch (Exception ex)
+            {
+                throw new System.InvalidOperationException("Ошибка подключения к БД!\n\n" + ex.Message);
+            }
+        }
+        public static void BeginTransaction()
+        {
+            try
+            {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                    transaction = null;
+                }
+                transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted);
+            }
+            catch (Exception ex)
+            {
+                throw new System.InvalidOperationException("Ошибка!\n\n" + ex.Message);
+            }
+        }
+        public static void CommitTransaction()
+        {
+            try
+            {
+                if (transaction != null)
+                    transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                throw new System.InvalidOperationException("Ошибка!\n\n" + ex.Message);
+            }
+        }
+        public static void RollbackTransaction()
+        {
+            try
+            {
+                if (transaction != null)
+                    transaction.Rollback();
+            }
+            catch (Exception ex)
+            {
+                throw new System.InvalidOperationException("Ошибка!\n\n" + ex.Message);
+            }
+        }
+        public static void CloseConnect()
+        {
+            try
+            {
+                if (connection.State != ConnectionState.Closed)
+                    connection.Close();
+            }
+            catch (Exception ex)
+            {
+                throw new System.InvalidOperationException("Ошибка закрытия подключения БД!\n\n" + ex.Message);
+            }
+        }
+
        
-        
-        public class MySqlResultExec
-        {
-            public int Result;
-            public string ErrorText;
-            public bool HasError;
-        }
-        public class MySqlResultScalar
-        {
-            public int ResultInt;
-            public string ResultString;
-            public DateTime ResultDateTime;
-            public string ErrorText;
-            public bool HasError;
-        }
-        public class MySqlResultTable
-        {           
-            public DataTable ResultTbl;           
-            public string ErrorText;           
-            public bool HasError;
-        }
         
 
         
-        public MySqlResultTable MySqlGetData(string sql, List<object> param)
+        public static MySqlResultTable MySqlGetData(string sql, List<object> param)
         {
-            MySqlResultTable rw = new MySqlResultTable();     
-            MySqlCommand sqlCom = new MySqlCommand(sql, DbCon.connection, DbCon.transaction);
+            MySqlResultTable rw= new MySqlResultTable();     
+            MySqlCommand sqlCom = new MySqlCommand(sql, connection, transaction);
             try {               
                 int i = 1;
                 foreach (object prm in param)
@@ -62,10 +141,10 @@ namespace Mig
         }
 
         /*Выполнение sql запроса, возврат первой строки первого столбца*/
-        public MySqlResultScalar MySqlExecuteScalar(string sql, List<object> param,string ret_type)
+        public static MySqlResultScalar MySqlExecuteScalar(string sql, List<object> param,string ret_type)
         {
             MySqlResultScalar rw = new MySqlResultScalar();          
-            MySqlCommand sqlCom = new MySqlCommand(sql, DbCon.connection, DbCon.transaction);
+            MySqlCommand sqlCom = new MySqlCommand(sql, connection, transaction);
             try
             {               
                 if (param != null)
@@ -95,10 +174,10 @@ namespace Mig
         }
 
         /*Выполнение sql запроса без возврата данных, только id последней записи*/
-        public MySqlResultExec MySqlExecuteNonQuery(string sql, List<object> param)
+        public static MySqlResultExec MySqlExecuteNonQuery(string sql, List<object> param)
         {
             MySqlResultExec rw = new MySqlResultExec();
-            MySqlCommand sqlCom = new MySqlCommand(sql, DbCon.connection, DbCon.transaction);
+            MySqlCommand sqlCom = new MySqlCommand(sql, connection, transaction);
             try
             {       
                 if (param != null)

@@ -27,8 +27,7 @@ namespace Mig.Entity
         public override void Init()
         {
             base.Init();
-            AddrInter = new Addr_inter();
-            //AddrInter.Init();
+            AddrInter = new Addr_inter();            
         }
         public Contact(int contact_id_in)
         {

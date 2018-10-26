@@ -77,7 +77,7 @@ namespace Mig.Entity
         public void LoadAllAddress()
         {
             MySqlResultTable rw_tmp = new MySqlResultTable();
-            rw_tmp = MySqlGetData(SQL_SEL_ALL_ADDR, new List<object> { CONTACT_ID });
+            rw_tmp = Mig.DB.MySqlGetData(SQL_SEL_ALL_ADDR, new List<object> { CONTACT_ID });
             if (rw_tmp.HasError)
             {
                 LastErrorMessage = rw_tmp.ErrorText;

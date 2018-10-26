@@ -10,7 +10,7 @@ using static Mig.DB;
 
 namespace Mig.Entity
 {
-    public class EntityBase: DB
+    public class EntityBase
     {
         public int CONTACT_ID;
         public virtual string SQL_ENTITY_NAME
@@ -105,7 +105,7 @@ namespace Mig.Entity
             MySqlResultExec rs = new MySqlResultExec();
             string statement = "INSERT INTO " + Pref.Scheme+"."+"audit " + "(tbl,clmn,old_value,new_value,updated_by,created_by)"+
                 " VALUES(@param1,@param2,@param3,@param4,@param5,@param6);";
-            rs = MySqlExecuteNonQuery(statement, new List<object> { entity, field, old, new_v, Pref.LoginName, Pref.LoginName });
+            rs = Mig.DB.MySqlExecuteNonQuery(statement, new List<object> { entity, field, old, new_v, Pref.LoginName, Pref.LoginName });
             if (rs.HasError)
             {
                 LastErrorMessage = rs.ErrorText;

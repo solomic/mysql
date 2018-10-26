@@ -9,22 +9,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Mig;
 
 namespace mysql
 {
     public partial class Form1 : Form
     {
+       
         public Form1()
         {
             InitializeComponent();
+           
         }
         Contact con;
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                DbCon.Open();
-                DbCon.BeginTransaction();
+
+                Mig.DB.Open();
+                Mig.DB.BeginTransaction();
                 con = new Contact(47);
                 con.ReadFromDB(48);
                 textBox1.Text = con.id.ToString();
@@ -56,7 +60,7 @@ namespace mysql
                 con.Validate();
                 con.Save();
                 dataGridView1.DataSource = con.GetDataTable();
-                DbCon.RollbackTransaction();
+                Mig.DB.RollbackTransaction();
                 con = null;
             }
             catch(Exception ex)
